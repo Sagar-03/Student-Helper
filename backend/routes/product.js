@@ -5,6 +5,8 @@ const verifyToken = require('../middleware/verifyToken');
 const upload = require('../middleware/multer');
 const Product = require('../models/Product');
 
+const BASE_URL = process.env.BASE_URL || 'https://student-helper-b5j4.onrender.com';
+
 // ✅ Upload Product
 router.post('/upload', verifyToken, upload.single('image'), async (req, res) => {
   try {
@@ -18,7 +20,7 @@ router.post('/upload', verifyToken, upload.single('image'), async (req, res) => 
       price: Number(price),
       sellerName,
       whatsappNumber,
-      image: req.file.filename,
+      image: `${BASE_URL}/uploads/${req.file.filename}`,
       postedBy: req.user.id,
       sold: false
     });
@@ -38,7 +40,8 @@ router.post('/upload', verifyToken, upload.single('image'), async (req, res) => 
 router.get('/mysells', verifyToken, async (req, res) => {
   try {
     const products = await Product.find({ postedBy: req.user.id });
-    res.json(products);
+    const updated = products.map(p => ({ ...p._doc, image: p.image.startsWith('http') ? p.image : `${BASE_URL}/uploads/${p.image}` }));
+    res.json(updated);
   } catch (err) {
     res.status(500).json({ msg: 'Failed to fetch sells' });
   }
@@ -48,7 +51,8 @@ router.get('/mysells', verifyToken, async (req, res) => {
 router.get('/available', async (req, res) => {
   try {
     const products = await Product.find({ sold: false });
-    res.json(products);
+    const updated = products.map(p => ({ ...p._doc, image: p.image.startsWith('http') ? p.image : `${BASE_URL}/uploads/${p.image}` }));
+    res.json(updated);
   } catch (err) {
     res.status(500).json({ msg: 'Failed to fetch available products' });
   }
