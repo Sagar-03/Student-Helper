@@ -5,7 +5,12 @@ import Register from './pages/Register';
 import Upload from './pages/Upload';
 import Marketplace from './pages/Marketplace';
 import PurchaseDashboard from './pages/PurchaseDashboard';
+import Sells from './pages/Sells';
 import './index.css';
+import AllProductsDashboard from './pages/AllProductsDashboard';
+
+
+
 
 function App() {
   return (
@@ -17,6 +22,8 @@ function App() {
           <Link to="/upload"><button className="homepage-btn">Upload Product</button></Link>
           <Link to="/purchases"><button className="homepage-btn">My Purchases</button></Link>
           <Link to="/login"><button className="homepage-btn">Login</button></Link>
+          <Link to="/sells"><button className="homepage-btn">My Sells</button></Link>
+
           <Link to="/register"><button className="homepage-btn">Register</button></Link>
         </div>
       </div>
@@ -26,6 +33,8 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/upload' element={<Upload />} />
         <Route path='/purchases' element={<PurchaseDashboard />} />
+        <Route path='/sells' element={<Sells />} />
+        <Route path="/all-products" element={<AllProductsDashboard />} />
       </Routes>
     </Router>
   );
