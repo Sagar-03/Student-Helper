@@ -7,7 +7,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await axios.post('http://localhost:5000/api/auth/login', form);
-    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('token', response.data.token); // in Login.jsx
     alert('Logged in!');
   };
   return (
