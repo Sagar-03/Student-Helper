@@ -1,24 +1,71 @@
-// routes/product.js
-const router = require('express').Router();
-const Product = require('../models/Product');
+// ✅ product.js (Complete Final Version for Seller & Customer Workflow)
+const express = require('express');
+const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const upload = require('../middleware/multer');
+const Product = require('../models/Product');
 
+// ✅ Upload Product
 router.post('/upload', verifyToken, upload.single('image'), async (req, res) => {
-  const { title, description, price } = req.body;
-  const product = await Product.create({
-    title,
-    description,
-    price,
-    image: req.file.filename,
-    postedBy: req.user.id
-  });
-  res.json(product);
+  try {
+    const { title, description, price, sellerName, whatsappNumber } = req.body;
+
+    if (!req.file) return res.status(400).json({ msg: 'Image is required' });
+
+    const newProduct = new Product({
+      title,
+      description,
+      price: Number(price),
+      sellerName,
+      whatsappNumber,
+      image: req.file.filename,
+      postedBy: req.user.id,
+      sold: false
+    });
+
+    await newProduct.save();
+
+    // Optional: Send SMS/email to seller here (Twilio/Nodemailer)
+
+    res.status(201).json(newProduct);
+  } catch (err) {
+    console.error('❌ Upload Error:', err);
+    res.status(500).json({ msg: 'Upload failed' });
+  }
 });
 
-router.get('/all', async (req, res) => {
-  const products = await Product.find().populate('postedBy', 'name');
-  res.json(products);
+// ✅ Get Products Uploaded by Seller
+router.get('/mysells', verifyToken, async (req, res) => {
+  try {
+    const products = await Product.find({ postedBy: req.user.id });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ msg: 'Failed to fetch sells' });
+  }
+});
+
+// ✅ Get All Unsold Products
+router.get('/available', async (req, res) => {
+  try {
+    const products = await Product.find({ sold: false });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ msg: 'Failed to fetch available products' });
+  }
+});
+
+// ✅ Mark Product as Purchased (but keep it in seller's dashboard)
+router.patch('/purchase/:id', verifyToken, async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, { sold: true }, { new: true });
+    if (!updated) return res.status(404).json({ msg: 'Product not found' });
+
+    // Optional: Notify seller via WhatsApp/Email/SMS
+
+    res.json({ msg: 'Product marked as sold', product: updated });
+  } catch (err) {
+    res.status(500).json({ msg: 'Failed to mark as sold' });
+  }
 });
 
 module.exports = router;
