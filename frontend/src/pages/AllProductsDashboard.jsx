@@ -31,7 +31,11 @@ export default function AllProductsDashboard() {
       {products.length === 0 ? <p>No live products available.</p> : (
         products.map(product => (
           <div key={product._id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
-            <img src={`http://localhost:5000/uploads/${product.image}`} alt={product.title} style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }} />
+<img
+  src={product.image.startsWith('http') ? product.image : `https://student-helper-b5j4.onrender.com/uploads/${product.image}`}
+  alt={product.title}
+  style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }}
+/>
             <h3>{product.title}</h3>
             <p>{product.description}</p>
             <p>₹{product.price}</p>
