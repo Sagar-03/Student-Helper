@@ -24,7 +24,7 @@ export default function Upload() {
       alert('Product uploaded!');
     } catch (error) {
       alert('Upload failed: ' + (error.response?.data?.msg || error.message));
-      console.error('❌ Upload Error:', error.response?.data || error.message);
+      console.error(' Upload Error:', error.response?.data || error.message);
     }
   };
 
