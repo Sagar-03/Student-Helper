@@ -22,7 +22,6 @@ const startServer = async () => {
     console.error(' MongoDB connection error:', err);
   }
 };
-const cors = require('cors');
 
 const allowedOrigins = [
   'http://localhost:5173',
