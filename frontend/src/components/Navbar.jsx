@@ -1,17 +1,16 @@
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-export default function Navbar() {
+export default function Navbar({links = [] }) {
   return (
     <nav className="navbar">
-      <div className="nav-brand">🛒 MarketPlace</div>
+      <div className="nav-brand">Student-helper</div>
       <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/upload">Sell</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/all-products"><button>Browse Products</button></Link>
-
+        {links.map(({ to, label }, idx) => (
+          <Link key={idx} to={to}>
+            {label}
+          </Link>
+        ))}
       </div>
     </nav>
   );
