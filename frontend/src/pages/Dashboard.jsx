@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 export default function Dashboard() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="dashboard">
         <h1>Welcome to Your Dashboard</h1>
         <div className="features">
