@@ -10,6 +10,8 @@ export default function Navbar() {
         <Link to="/upload">Sell</Link>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
+        <Link to="/all-products"><button>Browse Products</button></Link>
+
       </div>
     </nav>
   );

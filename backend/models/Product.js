@@ -1,4 +1,3 @@
-// models/Product.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
@@ -6,6 +5,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   price: Number,
   image: String,
+  sold: { type: Boolean, default: false },
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
