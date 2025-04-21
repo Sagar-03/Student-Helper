@@ -3,9 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
 import './Form.css';
 import '../App.css';
+import Navbar from '../components/Navbar';
+import NavbarSide from '../components/NavbarSide';
+import "../components/Navbar.css";
+import "../components/NavbarSide.css";
 
 export default function Login() {
   const navigate = useNavigate();
+  const topLinks = [
+    { to: '/dashboard', label: 'Dashboard' },
+    { to: '/marketplace', label: 'Marketplace' },
+  ]
+
+  const sideLinks = [
+    { to: '/upload', label: 'Upload File' },
+    { to: '/purchases', label: 'My Purchases' },
+    { to: '/sells', label: 'My Sells' },
+    { to: '/all-products', label: 'Browse Products' },
+  ]
   const [form, setForm] = useState({ email: '', password: '' });
 
   const handleSubmit = async (e) => {
@@ -34,7 +49,13 @@ export default function Login() {
     }, 500);
   };
 
+  
+
   return (
+    <>
+    <Navbar links={topLinks} />
+    <NavbarSide links={sideLinks} />
+    
     <div className="login-container">
       <div className="login-card">
         <h2>Student Portal Login</h2>
@@ -67,5 +88,6 @@ export default function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }

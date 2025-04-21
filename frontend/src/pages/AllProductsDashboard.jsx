@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../axiosConfig";
-import whatsappIcon from "../assets/whatsapp.svg"; // adjust the path as needed
+import whatsappIcon from "../assets/whatsappIcon.svg"; // adjust the path as needed
 
 
 export default function AllProductsDashboard() {
