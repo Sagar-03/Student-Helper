@@ -1,16 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Upload from './pages/Upload';
-import Marketplace from './pages/Marketplace';
-import PurchaseDashboard from './pages/PurchaseDashboard';
-import Sells from './pages/Sells';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Upload from "./pages/Upload";
+import Marketplace from "./pages/Marketplace";
+import PurchaseDashboard from "./pages/PurchaseDashboard";
+import Sells from "./pages/Sells";
+import AllProductsDashboard from "./pages/AllProductsDashboard";
+import Dashboard from "./pages/Dashboard";
 import './index.css';
-import AllProductsDashboard from './pages/AllProductsDashboard';
-
-
-
 
 function App() {
   return (
@@ -23,7 +22,6 @@ function App() {
           <Link to="/purchases"><button className="homepage-btn">My Purchases</button></Link>
           <Link to="/login"><button className="homepage-btn">Login</button></Link>
           <Link to="/sells"><button className="homepage-btn">My Sells</button></Link>
-
           <Link to="/register"><button className="homepage-btn">Register</button></Link>
         </div>
       </div>
@@ -34,7 +32,8 @@ function App() {
         <Route path='/upload' element={<Upload />} />
         <Route path='/purchases' element={<PurchaseDashboard />} />
         <Route path='/sells' element={<Sells />} />
-        <Route path="/all-products" element={<AllProductsDashboard />} />
+        <Route path='/all-products' element={<AllProductsDashboard />} />
+        <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
     </Router>
   );
