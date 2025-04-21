@@ -1,15 +1,41 @@
+import { useEffect, useState } from 'react';
 import axios from '../axiosConfig';
-import './PurchaseButton.css';
 
-export default function PurchaseButton({ productId }) {
-  const handlePurchase = async () => {
-    try {
-      await axios.post(`/product/purchase/${productId}`);
-      alert('Purchase successful!');
-    } catch (err) {
-      alert('Purchase failed.');
-    }
-  };
+export default function ProductDashboard() {
+  const [products, setProducts] = useState([]);
 
-  return <button className="purchase-btn" onClick={handlePurchase}>Buy Now</button>;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('/product/mysells');
+        setProducts(res.data);
+      } catch (err) {
+        console.error('❌ Fetch Error:', err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <div className="form-container">
+      <h2>My Uploaded Products</h2>
+      {products.length === 0 ? (
+        <p>No products uploaded yet.</p>
+      ) : (
+        products.map((product) => (
+          <div key={product._id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
+            <img
+              src={`http://localhost:5000/uploads/${product.image}`}
+              alt={product.title}
+              style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }}
+            />
+            <h3>{product.title}</h3>
+            <p>{product.description}</p>
+            <p>₹{product.price}</p>
+            <p>Status: <strong>{product.sold ? 'Sold' : 'Live'}</strong></p>
+          </div>
+        ))
+      )}
+    </div>
+  );
 }
