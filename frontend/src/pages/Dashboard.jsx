@@ -2,13 +2,28 @@ import React from "react";
 import { useNavigate } from "react-router-dom"; // ✅ Import this
 import "../App.css";
 import Navbar from "../components/Navbar";
+import NavbarSide from "../components/NavbarSide";
+import "../components/Navbar.css";
+import "../components/NavbarSide.css";
+
 
 export default function Dashboard() {
   const navigate = useNavigate(); // ✅ Initialize it
 
+  const topLinks = [
+    {to: "/dashboard", label: "Dashboard"},
+    {to: "marketplace", label: "Marketplace"},
+  ];
+  const sideLinks = [
+    { to: "/upload", label: "Upload File" },
+    { to: "/purchases", label: "My Purchases" },
+  ];
+
   return (
     <>
-      {/* <Navbar /> */}
+    <Navbar links={topLinks} />
+    <NavbarSide links={sideLinks} />
+
       <div className="dashboard">
         <h1>Welcome to Your Dashboard</h1>
         <div className="features">
