@@ -17,24 +17,38 @@ export default function ProductDashboard() {
   }, []);
 
   return (
-    <div className="form-container">
-      <h2>My Uploaded Products</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-4">My Uploaded Products</h2>
+
       {products.length === 0 ? (
-        <p>No products uploaded yet.</p>
+        <p className="text-gray-500">No products uploaded yet.</p>
       ) : (
-        products.map((product) => (
-          <div key={product._id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
-            <img
-              src={`http://localhost:5000/uploads/${product.image}`}
-              alt={product.title}
-              style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }}
-            />
-            <h3>{product.title}</h3>
-            <p>{product.description}</p>
-            <p>₹{product.price}</p>
-            <p>Status: <strong>{product.sold ? 'Sold' : 'Live'}</strong></p>
-          </div>
-        ))
+        <div className="grid gap-4">
+          {products.map((product) => (
+            <div
+              key={product._id}
+              className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white"
+            >
+              <img
+                src={`http://localhost:5000/uploads/${product.image}`}
+                alt={product.title}
+                className="w-full max-h-[200px] object-cover rounded-md"
+              />
+              <h3 className="text-lg font-bold mt-2">{product.title}</h3>
+              <p className="text-sm text-gray-700">{product.description}</p>
+              <p className="text-green-600 font-medium mt-1">₹{product.price}</p>
+              <p className="mt-1">
+                Status:{' '}
+                <strong className={product.sold ? 'text-red-500' : 'text-green-500'}>
+                  {product.sold ? 'Sold' : 'Live'}
+                </strong>
+              </p>
+              <button className="mt-3 px-4 py-2 bg-emerald-500 text-white font-semibold rounded-md hover:bg-emerald-600">
+                Purchase
+              </button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
