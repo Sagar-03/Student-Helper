@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom"; // ✅ Import this
 import "../App.css";
 import Navbar from "../components/Navbar";
 import NavbarSide from "../components/NavbarSide";
-import "../components/Navbar.css";
-import "../components/NavbarSide.css";
-
+import axios from "../axiosConfig";
 
 export default function Dashboard() {
   const navigate = useNavigate(); // ✅ Initialize it
 
   const topLinks = [
-    {to: "/dashboard", label: "Dashboard"},
-    {to: "marketplace", label: "Marketplace"},
+    { to: "/dashboard", label: "Dashboard" },
+    { to: "marketplace", label: "Marketplace" },
   ];
   const sideLinks = [
     { to: "/upload", label: "Upload File" },
@@ -21,24 +19,46 @@ export default function Dashboard() {
 
   return (
     <>
-    <Navbar links={topLinks} />
-    <NavbarSide links={sideLinks} />
+      <div className="flex min-h-screen bg-gray-100">
+        {/* Sidebar on the left */}
+        <div className="w-64 bg-gray-100">
+          <NavbarSide links={sideLinks} />
+        </div>
 
-      <div className="dashboard">
-        <h1>Welcome to Your Dashboard</h1>
-        <div className="features">
-          <div className="feature-card" onClick={() => navigate("/marketplace")}>Marketplace</div>
-          <div className="feature-card">Notes</div>
-          <div className="feature-card">Placement Referral</div>
-          <div className="feature-card" onClick={() => navigate("/sells")}>Selling Drafter etc</div>
-          <div className="feature-card">Nearest PG</div>
-          <div className="feature-card">Roommate Finder</div>
-          <div className="feature-card">Nearby Mess or Caterers</div>
-          <div className="feature-card">Calendar</div>
-          <div className="feature-card">Senior Contact</div>
-          <div className="feature-card">Google Classroom API</div>
-          <div className="feature-card" onClick={() => navigate("/upload")}>File Writing Service</div>
-          <div className="feature-card">Society & Club Info</div>
+        {/* Main content area */}
+        <div className="flex flex-col flex-1">
+          {/* Top Navbar */}
+          <div className="w-full bg-gray-100">
+            <Navbar links={topLinks} />
+          </div>
+
+          {/* Dashboard content */}
+          <div className="p-6 flex-1">
+            <h1 className="text-2xl font-bold mb-4 align-middle">Welcome to Your Dashboard</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div
+                className="feature-card"
+                onClick={() => navigate("/marketplace")}
+              >
+                Marketplace
+              </div>
+              <div className="feature-card">Notes</div>
+              <div className="feature-card">Placement Referral</div>
+              <div className="feature-card" onClick={() => navigate("/sells")}>
+                Selling Drafter etc
+              </div>
+              <div className="feature-card">Nearest PG</div>
+              <div className="feature-card">Roommate Finder</div>
+              <div className="feature-card">Nearby Mess or Caterers</div>
+              <div className="feature-card">Calendar</div>
+              <div className="feature-card">Senior Contact</div>
+              <div className="feature-card">Google Classroom API</div>
+              <div className="feature-card" onClick={() => navigate("/upload")}>
+                File Writing Service
+              </div>
+              <div className="feature-card">Society & Club Info</div>
+            </div>
+          </div>
         </div>
       </div>
     </>
