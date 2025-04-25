@@ -3,8 +3,7 @@ import axios from '../axiosConfig';
 import ProductCard from '../components/ProductCard';
 import Navbar from '../components/Navbar';
 import NavbarSide from '../components/NavbarSide';
-import "../components/Navbar.css";
-import "../components/NavbarSide.css";
+import React from 'react';
 
 export default function Marketplace() {
   const [products, setProducts] = useState([]);
