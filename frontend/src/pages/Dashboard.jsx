@@ -56,7 +56,7 @@ export default function Dashboard() {
               <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm" onClick={() => navigate("/upload")}>
                 File Writing Service
               </div>
-              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Society & Club Info</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Society  Club Info</div>
             </div>
           </div>
         </div>
