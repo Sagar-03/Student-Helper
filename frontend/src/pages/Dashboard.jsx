@@ -33,30 +33,30 @@ export default function Dashboard() {
           </div>
 
           {/* Dashboard content */}
-          <div className="p-6 flex-1">
+          <div className="p-6 flex-1 ">
             <h1 className="text-2xl font-bold mb-4 align-middle">Welcome to Your Dashboard</h1>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div
-                className="feature-card"
+                className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm"
                 onClick={() => navigate("/marketplace")}
               >
                 Marketplace
               </div>
-              <div className="feature-card">Notes</div>
-              <div className="feature-card">Placement Referral</div>
-              <div className="feature-card" onClick={() => navigate("/sells")}>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Notes</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Placement Referral</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm" onClick={() => navigate("/sells")}>
                 Selling Drafter etc
               </div>
-              <div className="feature-card">Nearest PG</div>
-              <div className="feature-card">Roommate Finder</div>
-              <div className="feature-card">Nearby Mess or Caterers</div>
-              <div className="feature-card">Calendar</div>
-              <div className="feature-card">Senior Contact</div>
-              <div className="feature-card">Google Classroom API</div>
-              <div className="feature-card" onClick={() => navigate("/upload")}>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Nearest PG</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Roommate Finder</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Nearby Mess or Caterers</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Calendar</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Senior Contact</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Google Classroom API</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm" onClick={() => navigate("/upload")}>
                 File Writing Service
               </div>
-              <div className="feature-card">Society & Club Info</div>
+              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Society  Club Info</div>
             </div>
           </div>
         </div>
