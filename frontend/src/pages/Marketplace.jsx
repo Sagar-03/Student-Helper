@@ -25,40 +25,52 @@ export default function Marketplace() {
   ]
 
   return (
-    <>
-      <Navbar  links={topLinks} />
-      <NavbarSide links={sideLinks} />
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar on the left */}
+      <div className="w-64 bg-gray-100">
+        <NavbarSide links={sideLinks} />
+      </div>
 
-      <div style={{ marginLeft: '220px', padding: '2rem' }}>
-        <h1 style={{ textAlign: 'center' }}>Welcome to 🛒 <b>MarketPlace</b></h1>
-
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap',
-          marginTop: '2rem'
-        }}>
-          <a href="/upload"><button className="homepage-btn">Upload Product</button></a>
-          <a href="/purchases"><button className="homepage-btn">My Purchases</button></a>
-          <a href="/login"><button className="homepage-btn">Login</button></a>
-          <a href="/sells"><button className="homepage-btn">My Sells</button></a>
-          <a href="/register"><button className="homepage-btn">Register</button></a>
-          <a href="/all-products"><button className="homepage-btn">Browse Products</button></a>
+      {/* Main content area */}
+      <div className="flex flex-col flex-1">
+        {/* Top Navbar */}
+        <div className="w-full bg-gray-100">
+          <Navbar links={topLinks} />
         </div>
 
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          justifyContent: 'center',
-          marginTop: '2rem'
-        }}>
-          {products.map((p) => (
-            <ProductCard key={p._id} product={p} />
-          ))}
+        {/* Main section */}
+        <div className="ml-14 p-8">
+          <h1 className="text-center text-3xl font-semibold">Welcome to 🛒 <b>MarketPlace</b></h1>
+
+          <div className="flex justify-center gap-4 flex-wrap mt-8">
+            <a href="/upload">
+              <button className="homepage-btn">Upload Product</button>
+            </a>
+            <a href="/purchases">
+              <button className="homepage-btn">My Purchases</button>
+            </a>
+            <a href="/login">
+              <button className="homepage-btn">Login</button>
+            </a>
+            <a href="/sells">
+              <button className="homepage-btn">My Sells</button>
+            </a>
+            <a href="/register">
+              <button className="homepage-btn">Register</button>
+            </a>
+            <a href="/all-products">
+              <button className="homepage-btn">Browse Products</button>
+            </a>
+          </div>
+
+          {/* Products section */}
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            {products.map((p) => (
+              <ProductCard key={p._id} product={p} />
+            ))}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
