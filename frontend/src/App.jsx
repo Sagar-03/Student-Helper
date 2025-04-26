@@ -8,6 +8,7 @@ import PurchaseDashboard from "./pages/PurchaseDashboard";
 import Sells from "./pages/Sells";
 import AllProductsDashboard from "./pages/AllProductsDashboard";
 import Dashboard from "./pages/Dashboard";
+import GoogleClassroom from './pages/GoogleClassroom';
 import './index.css';
 
 
@@ -25,6 +26,7 @@ function App() {
         <Route path='/all-products' element={<AllProductsDashboard />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/marketplace' element={<Marketplace />} />
+        <Route path='/googleclassroom' element={<GoogleClassroom />} />
       </Routes>
     </Router>
   );
