@@ -1,17 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import this
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 import Navbar from "../components/Navbar";
 import NavbarSide from "../components/NavbarSide";
 import axios from "../axiosConfig";
 
 export default function Dashboard() {
-  const navigate = useNavigate(); // ✅ Initialize it
+  const navigate = useNavigate();
 
   const topLinks = [
     { to: "/dashboard", label: "Dashboard" },
-    { to: "marketplace", label: "Marketplace" },
+    { to: "/marketplace", label: "Marketplace" },
   ];
+  
   const sideLinks = [
     { to: "/upload", label: "Upload File" },
     { to: "/purchases", label: "My Purchases" },
@@ -52,7 +53,12 @@ export default function Dashboard() {
               <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Nearby Mess or Caterers</div>
               <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Calendar</div>
               <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Senior Contact</div>
-              <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm">Google Classroom API</div>
+              <div 
+                className="p-4 flex-1 flex items-center justify-center bg-white rounded-lg shadow max-v-sm hover:bg-gray-50 cursor-pointer" 
+                onClick={() => navigate("/googleclassroom")}
+              >
+                Google Classroom API
+              </div>
               <div className="p-4 flex-1 items-center bg-white rounded-lg shadow max-v-sm" onClick={() => navigate("/upload")}>
                 File Writing Service
               </div>
