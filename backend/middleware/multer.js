@@ -3,7 +3,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // ✅ Uploads saved in /uploads
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}-${file.originalname}`;
@@ -12,4 +12,5 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
 module.exports = upload;
