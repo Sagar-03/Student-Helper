@@ -1,5 +1,3 @@
-// AllProductsDashboard.jsx
-
 import { useEffect, useState } from "react";
 import axios from "../axiosConfig";
 import NavbarSide from "../components/NavbarSide";
@@ -9,23 +7,24 @@ const sideLinks = [
   { to: "/upload", label: "Upload File" },
   { to: "/purchases", label: "My Purchases" },
   { to: "/sells", label: "My Sells" },
+  { to: "/all-products", label: "Browse Products" },
 ];
 
-// --- FIXED ProductCard ---
+// --- ProductCard Component ---
 const ProductCard = ({ product, onBuyClick }) => {
   return (
     <div className="flex bg-white rounded-lg shadow-md overflow-hidden w-[800px] h-[200px] p-8 m-10">
-      {/* Left image */}
+      {/* Left Image */}
       <img
         src={product.image || "https://via.placeholder.com/150"}
         alt="Product"
         className="w-1/3 h-full object-cover rounded-l-lg"
       />
 
-      {/* Right content */}
+      {/* Right Content */}
       <div className="p-4 flex flex-col justify-between flex-1">
         <div>
-          <h2 className="text-lg font-bold mb-1">{product.name}</h2>
+          <h2 className="text-lg font-bold mb-1">{product.title}</h2>
           <p className="text-gray-600 mb-2">{product.description}</p>
           <p className="text-gray-800 font-semibold mb-2">
             Price: ₹{product.price}
@@ -33,9 +32,9 @@ const ProductCard = ({ product, onBuyClick }) => {
         </div>
 
         <div className="flex gap-2">
-          {/* Contact Seller button (dummy link) */}
+          {/* Contact Seller */}
           <a
-            href="#"
+            href={`https://wa.me/91${product.whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-600 transition"
@@ -56,47 +55,31 @@ const ProductCard = ({ product, onBuyClick }) => {
   );
 };
 
-// --- AllProductsDashboard ---
+// --- Main AllProductsDashboard ---
 export default function AllProductsDashboard() {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handlePurchase = async (productId) => {
     try {
-      await axios.patch(`/product/${productId}/buy`);
-      alert("✅ Purchase successful!");
-      setProducts(products.filter((p) => p._id !== productId)); // note _id not id
-      setSelectedProduct(null);
+      await axios.patch(`/product/purchase/${productId}`); // note correct PATCH URL
+      alert(" Purchase successful!");
+      setProducts(products.filter((p) => p._id !== productId));
     } catch (err) {
-      alert("❌ Purchase failed!" + (err.response?.data?.msg || err.message));
+      alert(" Purchase failed: " + (err.response?.data?.msg || err.message));
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get('/product/available'); // Fetch from real API
+      setProducts(res.data); // Save real products in state
+    } catch (err) {
+      console.error(' Failed to fetch products:', err.response?.data || err.message);
     }
   };
 
   useEffect(() => {
-    // MOCK PRODUCTS
-    setProducts([
-      {
-        _id: "1",
-        name: "MacBook Pro",
-        description: "High-performance laptop for developers.",
-        price: 150000,
-        image: "https://images.unsplash.com/photo-1587202372775-b57b36ad39a7",
-      },
-      {
-        _id: "2",
-        name: "iPhone 14",
-        description: "Brand new iPhone 14 for sale!",
-        price: 90000,
-        image: "https://images.unsplash.com/photo-1661961112952-69e46cf29c5a",
-      },
-      {
-        _id: "3",
-        name: "Gaming Keyboard",
-        description: "Mechanical RGB keyboard.",
-        price: 5000,
-        image: "https://images.unsplash.com/photo-1587202372775-b57b36ad39a7",
-      },
-    ]);
+    fetchProducts();
   }, []);
 
   return (
