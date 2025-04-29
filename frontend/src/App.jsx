@@ -33,6 +33,9 @@ function App() {
         <Route path="/sells" element={<Sells />} />
         <Route path="/all-products" element={<AllProductsDashboard />} />
 
+        <Route path='/mysells' element={<Sells />} />  // ✅ Add this line
+
+
         {/* Other */}
         <Route path="/googleclassroom" element={<GoogleClassroom />} />
       </Routes>
