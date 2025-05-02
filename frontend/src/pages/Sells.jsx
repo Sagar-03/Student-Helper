@@ -12,6 +12,8 @@ const sideLinks = [
 
 export default function Sells() {
   const [products, setProducts] = useState([]);
+  const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const navigate = useNavigate();
 
   const fetchMySells = async () => {
@@ -35,8 +37,33 @@ export default function Sells() {
     }
   };
 
-  const handleEdit = (productId) => {
-    navigate(`/edit/${productId}`);
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+    setIsEditPopupVisible(true);
+  };
+
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedData = {
+        title: editingProduct.title,
+        description: editingProduct.description,
+        price: editingProduct.price
+      };
+      
+      const response = await axios.patch(`/product/${editingProduct._id}`, updatedData);
+      
+      // Update product in the local state
+      setProducts(
+        products.map((p) => (p._id === editingProduct._id ? {...p, ...updatedData} : p))
+      );
+      
+      setIsEditPopupVisible(false);
+      alert("Product updated successfully!");
+    } catch (err) {
+      console.error("Update failed:", err.response?.data || err.message);
+      alert("Update failed!");
+    }
   };
 
   useEffect(() => {
@@ -66,7 +93,7 @@ export default function Sells() {
               <div className="flex space-x-2">
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                  onClick={() => handleEdit(product._id)}
+                  onClick={() => handleEdit(product)}
                 >
                   Edit
                 </button>
@@ -79,6 +106,71 @@ export default function Sells() {
               </div>
             </div>
           ))
+        )}
+
+        {/* Edit Popup */}
+        {isEditPopupVisible && editingProduct && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md">
+              <h2 className="text-xl font-semibold mb-4">Edit Product</h2>
+              
+              <form onSubmit={handleUpdateProduct} className="flex flex-col gap-4">
+                <input
+                  className="p-3 border border-gray-300 rounded-md"
+                  placeholder="Title"
+                  value={editingProduct.title}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      title: e.target.value,
+                    })
+                  }
+                  required
+                />
+                <input
+                  className="p-3 border border-gray-300 rounded-md"
+                  placeholder="Description"
+                  value={editingProduct.description}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      description: e.target.value,
+                    })
+                  }
+                  required
+                />
+                <input
+                  className="p-3 border border-gray-300 rounded-md"
+                  placeholder="Price"
+                  type="number"
+                  value={editingProduct.price}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      price: e.target.value,
+                    })
+                  }
+                  required
+                />
+                
+                <div className="flex space-x-2 mt-4">
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex-1"
+                  >
+                    Update
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 flex-1"
+                    onClick={() => setIsEditPopupVisible(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
       </div>
     </div>
