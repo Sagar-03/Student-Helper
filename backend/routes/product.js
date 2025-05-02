@@ -8,6 +8,7 @@ const {
   uploadProduct,
   getAvailableProducts,
   purchaseProduct,
+  getPurchasedProducts,
   getMySells,
   deleteProduct
 } = require('../controllers/productController');
@@ -18,8 +19,11 @@ router.post('/upload', verifyToken, upload.single('image'), uploadProduct);
 // ✅ Get all available (unsold) products
 router.get('/available', getAvailableProducts);
 
-// ✅ Mark a product as sold
-router.patch('/purchase/:id', purchaseProduct);
+// ✅ Mark a product as sold (now requires authentication to track buyer)
+router.patch('/purchase/:id', verifyToken, purchaseProduct);
+
+// ✅ Get products purchased by the current user
+router.get('/purchased', verifyToken, getPurchasedProducts);
 
 // ✅ Get all products uploaded by the current logged-in user (Seller dashboard)
 router.get('/mysells', verifyToken, getMySells);

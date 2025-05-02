@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
 import Navbar from '../components/Navbar';
@@ -19,6 +19,15 @@ export default function Upload() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Check if user is logged in
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      // Redirect to login page if not logged in
+      navigate('/login', { state: { from: '/upload' } });
+    }
+  }, [navigate]);
 
   const topLinks = [
     { to: "/dashboard", label: "Dashboard" },
