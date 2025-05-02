@@ -12,8 +12,8 @@ const {
   deleteProduct
 } = require('../controllers/productController');
 
-// ✅ Upload product (no login required)
-router.post('/upload', upload.single('image'), uploadProduct);
+// ✅ Upload product (requires authentication)
+router.post('/upload', verifyToken, upload.single('image'), uploadProduct);
 
 // ✅ Get all available (unsold) products
 router.get('/available', getAvailableProducts);
