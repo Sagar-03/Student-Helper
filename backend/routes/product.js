@@ -9,6 +9,7 @@ const {
   getAvailableProducts,
   purchaseProduct,
   getMySells,
+  deleteProduct
 } = require('../controllers/productController');
 
 // ✅ Upload product (no login required)
@@ -23,21 +24,30 @@ router.patch('/purchase/:id', purchaseProduct);
 // ✅ Get all products uploaded by the current logged-in user (Seller dashboard)
 router.get('/mysells', verifyToken, getMySells);
 
-// ✅ Delete a product uploaded by the current user
-router.delete('/:id', verifyToken, async (req, res) => {
+// ✅ Update a product
+router.patch('/:id', verifyToken, async (req, res) => {
   try {
-    const product = await Product.findOneAndDelete({
-      _id: req.params.id,
-      postedBy: req.user._id
-    });
-
-    if (!product) return res.status(404).json({ msg: "Product not found" });
-
-    res.json({ msg: "Product deleted successfully" });
+    const { title, description, price } = req.body;
+    
+    // Find and update the product that belongs to current user
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: req.params.id, postedBy: req.user._id },
+      { title, description, price },
+      { new: true }
+    );
+    
+    if (!updatedProduct) {
+      return res.status(404).json({ msg: 'Product not found or not authorized' });
+    }
+    
+    res.json({ msg: 'Product updated successfully', product: updatedProduct });
   } catch (err) {
-    console.error("Delete error:", err);
-    res.status(500).json({ msg: "Failed to delete" });
+    console.error('Update error:', err);
+    res.status(500).json({ msg: 'Failed to update product' });
   }
 });
+
+// ✅ Delete a product uploaded by the current user
+router.delete('/:id', verifyToken, deleteProduct);
 
 module.exports = router;
