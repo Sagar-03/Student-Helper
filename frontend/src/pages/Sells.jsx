@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axiosConfig";
 import NavbarSide from "../components/NavbarSide";
+import BackButton from "../components/BackButton";
 import { useNavigate } from "react-router-dom";
 
 const sideLinks = [
@@ -76,6 +77,9 @@ export default function Sells() {
         <NavbarSide links={sideLinks} />
       </div>
       <div className="flex-1 p-8">
+        {/* Back Button */}
+        <BackButton />
+        
         <h1 className="text-2xl font-bold mb-4">Your Uploaded Products</h1>
         {products.length === 0 ? (
           <p>No products uploaded yet.</p>

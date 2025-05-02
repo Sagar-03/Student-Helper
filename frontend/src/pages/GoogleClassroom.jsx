@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import NavbarSide from '../components/NavbarSide';
+import BackButton from '../components/BackButton';
 import axios from '../axiosConfig';
 
 export default function GoogleClassroom() {
@@ -58,6 +59,9 @@ export default function GoogleClassroom() {
           <div className="w-full bg-gray-100">
             <Navbar links={topLinks} />
           </div>
+
+          {/* Back Button */}
+          <BackButton />
 
           <div className="min-h-screen bg-gray-100 pt-20 p-8">
             <div className="max-w-6xl mx-auto">
