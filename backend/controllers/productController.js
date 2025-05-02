@@ -1,4 +1,6 @@
 const Product = require('../models/Product');
+const fs = require('fs');
+const path = require('path');
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
 
@@ -65,5 +67,46 @@ exports.getMySells = async (req, res) => {
   } catch (error) {
     console.error('Fetch my sells error:', error);
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Delete product and its associated image file
+exports.deleteProduct = async (req, res) => {
+  try {
+    // Find the product
+    const product = await Product.findOne({
+      _id: req.params.id,
+      postedBy: req.user._id
+    });
+
+    if (!product) {
+      return res.status(404).json({ msg: "Product not found or you don't have permission to delete it" });
+    }
+
+    // Extract filename from the image URL
+    const imageUrl = product.image;
+    let filename = null;
+    if (imageUrl) {
+      // Extract just the filename from the full path
+      filename = imageUrl.split('/').pop();
+    }
+
+    // Delete the product from the database
+    await Product.findByIdAndDelete(product._id);
+
+    // Delete the image file if it exists
+    if (filename) {
+      const filePath = path.join(__dirname, '../uploads', filename);
+      // Check if file exists before trying to delete it
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`Deleted file: ${filePath}`);
+      }
+    }
+
+    res.json({ msg: "Product and associated image deleted successfully" });
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ msg: "Failed to delete product" });
   }
 };
