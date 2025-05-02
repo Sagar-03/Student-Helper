@@ -70,7 +70,8 @@ export default function Dashboard() {
 
               {/* Notes Card */}
               <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-1 shadow-lg hover:shadow-green-300/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                <div className="bg-white h-full rounded-lg p-4 flex flex-col items-center justify-center">
+                <div onClick={() => navigate("/notes")} className="bg-white h-full rounded-lg p-4 flex flex-col items-center justify-center">
+                  
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
