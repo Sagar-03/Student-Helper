@@ -17,6 +17,19 @@ export default function Sells() {
   const [editingProduct, setEditingProduct] = useState(null);
   const navigate = useNavigate();
 
+  // Check if user is logged in
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      // Redirect to login page if not logged in
+      navigate('/login', { state: { from: '/sells' } });
+      return; // Stop further execution to prevent API call without token
+    }
+    
+    // Only fetch sells if user is authenticated
+    fetchMySells();
+  }, [navigate]);
+
   const fetchMySells = async () => {
     try {
       const res = await axios.get("/product/mysells");
@@ -66,10 +79,6 @@ export default function Sells() {
       alert("Update failed!");
     }
   };
-
-  useEffect(() => {
-    fetchMySells();
-  }, []);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
