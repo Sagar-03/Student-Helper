@@ -7,7 +7,8 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  // Use sessionStorage instead of localStorage for authentication
+  const token = sessionStorage.getItem('token');
   if (token) {
     config.headers['auth-token'] = token;
   }

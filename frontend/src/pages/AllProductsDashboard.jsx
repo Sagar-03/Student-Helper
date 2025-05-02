@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../axiosConfig";
 import NavbarSide from "../components/NavbarSide";
+import BackButton from "../components/BackButton";
 import React from "react";
 
 const sideLinks = [
@@ -91,6 +92,9 @@ export default function AllProductsDashboard() {
 
       {/* Content area */}
       <div className="flex flex-col items-center justify-start flex-1 py-8 overflow-auto">
+        {/* Back Button */}
+        <BackButton />
+        
         {products.length > 0 ? (
           products.map((product) => (
             <ProductCard

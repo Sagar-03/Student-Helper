@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import axios from '../axiosConfig';
+import BackButton from "../components/BackButton";
 
 export default function PurchaseDashboard() {
   const [purchases, setPurchases] = useState([]);
@@ -11,6 +12,9 @@ export default function PurchaseDashboard() {
 
   return (
     <div className="max-w-md mx-auto p-8 rounded-lg bg-[#f7f7f7] shadow-md flex flex-col gap-4">
+      {/* Back Button */}
+      <BackButton />
+      
       <h2 className="text-2xl font-semibold text-center">My Purchases</h2>
 
       {purchases.length === 0 ? (
