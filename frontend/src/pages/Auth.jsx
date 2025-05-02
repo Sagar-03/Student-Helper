@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../axiosConfig";
 import Navbar from "../components/Navbar";
-import NavbarSide from "../components/NavbarSide";
 import BackButton from "../components/BackButton";
 import React from "react";
 
@@ -17,13 +16,6 @@ export default function Auth() {
   const topLinks = [
     { to: "/dashboard", label: "Dashboard" },
     { to: "/marketplace", label: "Marketplace" },
-  ];
-
-  const sideLinks = [
-    { to: "/upload", label: "Upload File" },
-    { to: "/purchases", label: "My Purchases" },
-    { to: "/sells", label: "My Sells" },
-    { to: "/all-products", label: "Browse Products" },
   ];
 
   const handleSubmit = async (e) => {
@@ -77,12 +69,7 @@ export default function Auth() {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-indigo-100">
-      {/* Sidebar */}
-      <div className="w-64 shadow-md">
-        <NavbarSide links={sideLinks} />
-      </div>
-
-      {/* Main Content */}
+      {/* Main Content - Now takes full width */}
       <div className="flex flex-col bg-transparent flex-1">
         {/* Top Navbar */}
         <div className="w-full">
