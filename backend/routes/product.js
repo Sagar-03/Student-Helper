@@ -8,6 +8,7 @@ const {
   uploadProduct,
   getAvailableProducts,
   purchaseProduct,
+  getMySells,
 } = require('../controllers/productController');
 
 // ✅ Upload product (no login required)
@@ -20,22 +21,14 @@ router.get('/available', getAvailableProducts);
 router.patch('/purchase/:id', purchaseProduct);
 
 // ✅ Get all products uploaded by the current logged-in user (Seller dashboard)
-router.get('/mysells', verifyToken, async (req, res) => {
-  try {
-    const products = await Product.find({ postedBy: req.user.id });
-    res.json(products);
-  } catch (err) {
-    console.error("Error fetching sells:", err);
-    res.status(500).json({ msg: 'Failed to fetch sells' });
-  }
-});
+router.get('/mysells', verifyToken, getMySells);
 
 // ✅ Delete a product uploaded by the current user
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const product = await Product.findOneAndDelete({
       _id: req.params.id,
-      postedBy: req.user.id
+      postedBy: req.user._id
     });
 
     if (!product) return res.status(404).json({ msg: "Product not found" });
