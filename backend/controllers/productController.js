@@ -19,7 +19,8 @@ exports.uploadProduct = async (req, res) => {
       sellerName,
       whatsappNumber,
       image: `${BASE_URL}/uploads/${image}`, // Save full URL
-      sold: false // IMPORTANT: sold false on upload
+      sold: false, // IMPORTANT: sold false on upload
+      postedBy: req.user._id // Associate product with user
     });
 
     await newProduct.save();
@@ -53,5 +54,16 @@ exports.purchaseProduct = async (req, res) => {
   } catch (error) {
     console.error('Purchase error:', error);
     res.status(500).json({ msg: 'Failed to purchase product' });
+  }
+};
+
+// Get products uploaded by the current user
+exports.getMySells = async (req, res) => {
+  try {
+    const products = await Product.find({ postedBy: req.user._id });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Fetch my sells error:', error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
