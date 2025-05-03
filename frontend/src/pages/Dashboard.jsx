@@ -77,9 +77,9 @@ export default function Dashboard() {
   const nonHostellerCards = [
     {
       title: "Nearest PG",
-      color: "red",
+      color: "teal",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-teal-600" viewBox="0 0 20 20" fill="currentColor">
           <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
         </svg>
       ),
@@ -87,9 +87,9 @@ export default function Dashboard() {
     },
     {
       title: "Roommate Finder",
-      color: "cyan",
+      color: "emerald",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-cyan-600" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
           <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
         </svg>
       ),
@@ -97,9 +97,9 @@ export default function Dashboard() {
     },
     {
       title: "Nearby Mess",
-      color: "emerald",
+      color: "cyan",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-cyan-600" viewBox="0 0 20 20" fill="currentColor">
           <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h5a1 1 0 000-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM13 16a1 1 0 102 0v-5.586l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 101.414 1.414L13 10.414V16z" />
         </svg>
       ),
@@ -107,9 +107,9 @@ export default function Dashboard() {
     },
     {
       title: "Transportation",
-      color: "indigo",
+      color: "lime",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-lime-600" viewBox="0 0 20 20" fill="currentColor">
           <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
           <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
         </svg>
@@ -187,14 +187,14 @@ export default function Dashboard() {
         <div 
           key={card.title}
           onClick={card.onClick}
-          className={`relative overflow-hidden bg-gradient-to-br from-red-500 to-orange-400 rounded-xl shadow-lg hover:shadow-orange-300/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer`}
+          className={`relative overflow-hidden bg-gradient-to-br from-teal-500 to-emerald-600 rounded-xl shadow-lg hover:shadow-emerald-300/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer`}
         >
           <div className="bg-white m-1 h-full rounded-lg p-4 flex flex-col items-center justify-center">
-            <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-3">
+            <div className="w-12 h-12 bg-teal-50 rounded-full flex items-center justify-center mb-3">
               {card.icon}
             </div>
             <h3 className="font-semibold text-gray-800">{card.title}</h3>
-            <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full m-2"></div>
+            <div className="absolute top-0 right-0 w-3 h-3 bg-emerald-500 rounded-full m-2"></div>
           </div>
         </div>
       );
@@ -239,8 +239,8 @@ export default function Dashboard() {
                   onClick={() => setUserType("non-hosteller")}
                   className={`w-1/2 py-4 px-5 rounded-xl flex flex-col items-center justify-center transition-all duration-300 ${
                     userType === "non-hosteller"
-                      ? "bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-orange-200"
-                      : "bg-white text-gray-500 border border-gray-200 hover:border-orange-300"
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-emerald-200"
+                      : "bg-white text-gray-500 border border-gray-200 hover:border-emerald-300"
                   }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-2" viewBox="0 0 20 20" fill="currentColor">
@@ -276,10 +276,10 @@ export default function Dashboard() {
             <div className={`mb-6 px-4 py-2 rounded-lg ${
               userType === "hosteller" 
                 ? "bg-blue-50 border-l-4 border-blue-500" 
-                : "bg-red-50 border-l-4 border-red-500"
+                : "bg-teal-50 border-l-4 border-teal-500"
             }`}>
               <h2 className={`text-lg font-semibold ${
-                userType === "hosteller" ? "text-blue-700" : "text-red-700"
+                userType === "hosteller" ? "text-blue-700" : "text-teal-700"
               }`}>
                 {userType === "hosteller" ? "Hosteller Services" : "Non-Hosteller Services"}
               </h2>
@@ -298,13 +298,13 @@ export default function Dashboard() {
             
             {/* Student Helper Tips */}
             <div className={`mt-8 p-4 rounded-lg ${
-              userType === "hosteller" ? "bg-blue-50" : "bg-red-50"
+              userType === "hosteller" ? "bg-blue-50" : "bg-teal-50"
             }`}>
               <h4 className={`font-medium mb-2 ${
-                userType === "hosteller" ? "text-blue-800" : "text-red-800"
+                userType === "hosteller" ? "text-blue-800" : "text-teal-800"
               }`}>Student Helper Tips</h4>
               <ul className={`text-sm ml-5 list-disc ${
-                userType === "hosteller" ? "text-blue-700" : "text-red-700"
+                userType === "hosteller" ? "text-blue-700" : "text-teal-700"
               }`}>
                 <li>Keep track of assignment deadlines with the Calendar</li>
                 <li>Find study notes and materials in the Marketplace</li>
