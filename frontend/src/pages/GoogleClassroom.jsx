@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../axiosConfig';
 import BackButton from '../components/BackButton';
 import Navbar from '../components/Navbar';
 
 export default function GoogleClassroom() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [googleAuth, setGoogleAuth] = useState(null);
   const [courses, setCourses] = useState([]);
@@ -15,41 +16,86 @@ export default function GoogleClassroom() {
   const [activeTab, setActiveTab] = useState('courses');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
+  // Check for URL params on initial load - useful for handling redirects
   useEffect(() => {
-    // Check if user is already authenticated with Google
-    const checkGoogleAuth = async () => {
-      try {
-        const token = localStorage.getItem('googleToken');
-        if (token) {
-          // Verify token validity
-          setLoading(true);
-          const response = await axios.post('/api/google/verify-token', { token });
-          if (response.data.valid) {
-            setGoogleAuth({
-              token,
-              user: response.data.user
-            });
-            setIsLoggedIn(true);
-            fetchClassroomData(token);
-          } else {
-            // Token expired, clear it
-            localStorage.removeItem('googleToken');
-          }
+    const query = new URLSearchParams(location.search);
+    const token = query.get('token');
+    
+    if (token) {
+      // Store the token and clear URL parameters
+      localStorage.setItem('googleToken', token);
+      window.history.replaceState({}, document.title, '/googleclassroom');
+      
+      // Proceed with authentication
+      handleAuthentication(token);
+    } else {
+      // Check if user is already authenticated with Google
+      checkGoogleAuth();
+    }
+  }, [location.search]);
+
+  const checkGoogleAuth = async () => {
+    try {
+      const token = localStorage.getItem('googleToken');
+      if (token) {
+        // Verify token validity
+        setLoading(true);
+        const response = await axios.post('/api/google/verify-token', { token });
+        if (response.data.valid) {
+          setGoogleAuth({
+            token,
+            user: response.data.user
+          });
+          setIsLoggedIn(true);
+          fetchClassroomData(token);
+        } else {
+          // Token expired, clear it
+          localStorage.removeItem('googleToken');
           setLoading(false);
         }
-      } catch (err) {
-        console.error("Error checking Google auth:", err);
+      } else {
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error("Error checking Google auth:", err);
+      localStorage.removeItem('googleToken');
+      setLoading(false);
+    }
+  };
+
+  const handleAuthentication = async (token) => {
+    setLoading(true);
+    try {
+      const response = await axios.post('/api/google/verify-token', { token });
+      if (response.data.valid) {
+        setGoogleAuth({
+          token,
+          user: response.data.user
+        });
+        setIsLoggedIn(true);
+        fetchClassroomData(token);
+        
+        // Show success message
+        const notification = new Notification("Google Classroom Connected", {
+          body: "Successfully connected to Google Classroom",
+          icon: "/favicon.ico"
+        });
+      } else {
+        setError("Authentication failed. Please try again.");
         localStorage.removeItem('googleToken');
         setLoading(false);
       }
-    };
-
-    checkGoogleAuth();
-  }, []);
+    } catch (err) {
+      console.error("Error during authentication:", err);
+      setError("Authentication error. Please try again.");
+      localStorage.removeItem('googleToken');
+      setLoading(false);
+    }
+  };
 
   const handleGoogleLogin = async () => {
     try {
-      // Simple redirect to backend auth endpoint
+      // Open in same window to avoid popup blockers
       window.location.href = "http://localhost:5000/api/google/auth";
     } catch (err) {
       setError("Failed to authenticate with Google. Please try again.");
@@ -95,6 +141,18 @@ export default function GoogleClassroom() {
       });
       
       setAssignments(allAssignments);
+      
+      // Check notification status
+      try {
+        const notifResponse = await axios.get('/api/google/classroom/notification-status', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        setNotificationsEnabled(notifResponse.data.enabled);
+      } catch (err) {
+        console.error("Failed to check notification status:", err);
+      }
+      
     } catch (err) {
       setError("Failed to fetch Google Classroom data. Please try again.");
       console.error("Google Classroom data fetch error:", err);
