@@ -144,6 +144,33 @@ exports.handleCallback = async (req, res) => {
   }
 };
 
+// Update the callback handler to properly redirect
+exports.googleCallback = async (req, res) => {
+  try {
+    const code = req.query.code;
+    
+    if (!code) {
+      return res.redirect('/googleclassroom?error=Missing_authorization_code');
+    }
+    
+    // Exchange code for tokens
+    const { tokens } = await oauth2Client.getToken(code);
+    
+    // Create our application token that contains Google tokens
+    const jwtToken = jwt.sign({
+      accessToken: tokens.access_token,
+      refreshToken: tokens.refresh_token,
+      expiry: tokens.expiry_date
+    }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    
+    // Redirect to frontend with token
+    res.redirect(`${process.env.FRONTEND_URL}/google/callback?token=${jwtToken}`);
+  } catch (error) {
+    console.error('OAuth callback error:', error);
+    res.redirect('/googleclassroom?error=Authentication_failed');
+  }
+};
+
 // Verify Google token validity
 exports.verifyToken = async (req, res) => {
   const { token } = req.body;
