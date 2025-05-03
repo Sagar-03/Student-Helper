@@ -10,12 +10,12 @@ import Dashboard from "./pages/Dashboard";
 import GoogleClassroom from "./pages/GoogleClassroom";
 import SellerDashboard from "./pages/SellerDashboard";
 import Notes from "./components/Notes/Notes";
-import BTech from "./components/Notes/Btech/Btech";
+import BTech from "./components/Notes/BTech/BTech";
 import CSE from "./components/Notes/BTech/CSE/CSE";
 import Semester1 from "./components/Notes/BTech/CSE/Semesters/Sem1/1";
 import Semester2 from "./components/Notes/BTech/CSE/Semesters/Sem2/2";
 import Semester3 from "./components/Notes/BTech/CSE/Semesters/Sem3/3";
-import Semester4 from "./components/Notes/BTech/CSE/Semesters/Sem4/4";
+import Semester4 from "./components/Notes/BTech/CSE/Semesters/Sem4/4";  
 import Semester5 from "./components/Notes/BTech/CSE/Semesters/Sem5/5";
 import Semester6 from "./components/Notes/BTech/CSE/Semesters/Sem6/6";
 
