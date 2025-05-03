@@ -6,6 +6,8 @@ const app = express();
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
+const googleRoutes = require('./routes/googleRoutes'); // Import Google routes
+const { scheduleNotifications } = require('./cron'); // Import cron scheduler
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -15,28 +17,9 @@ const allowedOrigins = [
   'https://student-helper-yaye.vercel.app'
 ];
 
+// CORS setup
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],  // ✅ Add DELETE here
-  credentials: true
-}));
-
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PATCH'],
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true
 }));
 
@@ -45,6 +28,10 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
+app.use('/api/google', googleRoutes); // Mount Google routes
+
+// Initialize cron jobs
+scheduleNotifications();
 
 const startServer = async () => {
   try {
