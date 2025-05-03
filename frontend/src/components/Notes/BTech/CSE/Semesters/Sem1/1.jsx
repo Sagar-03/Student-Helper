@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 export default function Semester1() {
   const [selectedSubject, setSelectedSubject] = useState("Applied Physics 1");
   const [activeTab, setActiveTab] = useState("Syllabus");
   const { semesterId } = useParams();
+  const navigate = useNavigate();
 
   const semesterData = {
     subjects: [
@@ -30,15 +30,15 @@ export default function Semester1() {
         },
         { 
           title: "UNIT - II",
-          desc: "Waves and Oscillations: Wave motion, simple harmonic motion, wave equation, superposition principle. Introduction to Electromagnetic Theory: Maxwell’s equations. work done by the electromagnetic field, Poynting’s theorem, Momentum, Angular momentum in electromagnetic fields, Electromagnetic waves: the wave equation, plane electromagnetic waves, energy carried by electromagnetic waves"
+          desc: "Waves and Oscillations: Wave motion, simple harmonic motion, wave equation, superposition principle. Introduction to Electromagnetic Theory: Maxwell's equations. work done by the electromagnetic field, Poynting's theorem, Momentum, Angular momentum in electromagnetic fields, Electromagnetic waves: the wave equation, plane electromagnetic waves, energy carried by electromagnetic waves"
         },
         { 
           title: "UNIT - III",
-          desc: "Interference: Interference by division of wave front (Young's double slit experiment, Fresnel's biprism), interference by division of amplitude (thin films, Newton's rings, Michelson's interferometer), Coherence and coherent sources, Diffraction: Fraunhofer and Fresnel diffraction; Fraunhofer diffraction for Single slit, double slit, and N-slit (diffraction grating), Fraunhofer diffraction from a circular aperture, resolving power and dispersive power of a grating, Rayleigh criterion, resolving power of optical instruments, Polarization: Introduction to polarization, Brewster’s law, Malu's law, Nicol prism, double refraction, quarter-wave and half-wave plates, optical activity, specific rotation, Laurent half shade polarimeter."
+          desc: "Interference: Interference by division of wave front (Young's double slit experiment, Fresnel's biprism), interference by division of amplitude (thin films, Newton's rings, Michelson's interferometer), Coherence and coherent sources, Diffraction: Fraunhofer and Fresnel diffraction; Fraunhofer diffraction for Single slit, double slit, and N-slit (diffraction grating), Fraunhofer diffraction from a circular aperture, resolving power and dispersive power of a grating, Rayleigh criterion, resolving power of optical instruments, Polarization: Introduction to polarization, Brewster's law, Malu's law, Nicol prism, double refraction, quarter-wave and half-wave plates, optical activity, specific rotation, Laurent half shade polarimeter."
         },
         { 
           title: "UNIT - IV",
-          desc: "Theory of relativity: The Michelson-Morley Experiment and the speed of light; Absolute and Inertial frames of reference, Galilean transformations, the postulates of the special theory of relativity, Lorentz transformations, time dilation, length contraction, velocity addition, mass energy equivalence. Invariance of Maxwell’s equations under Lorentz Transformation. Introduction to Laser Physics: Introduction, coherence, Einstein A and B coefficients, population inversion, basic principle and operation of a laser, the He-Ne laser and the Ruby laser"
+          desc: "Theory of relativity: The Michelson-Morley Experiment and the speed of light; Absolute and Inertial frames of reference, Galilean transformations, the postulates of the special theory of relativity, Lorentz transformations, time dilation, length contraction, velocity addition, mass energy equivalence. Invariance of Maxwell's equations under Lorentz Transformation. Introduction to Laser Physics: Introduction, coherence, Einstein A and B coefficients, population inversion, basic principle and operation of a laser, the He-Ne laser and the Ruby laser"
         }
       ],
       "Applied Mathematics 1": [
@@ -48,15 +48,15 @@ export default function Semester1() {
         },
         {
           title: "UNIT - II",
-          desc: "Ordinary Differential Equations (ODEs): Basic Concepts, Geometric Meaning of y’= f(x, y), Direction Fields, Euler’s Method, Separable ODEs, Exact ODEs, Integrating Factors, Linear ODEs, Bernoulli Equation, Population Dynamics, Orthogonal Trajectories, Homogeneous Linear ODEs with Constant Coefficients, Differential Operators, Modeling of Free Oscillations of a Mass-Spring System, Euler–Cauchy Equations, Wronskian, Nonhomogeneous ODEs, Solution by Variation of Parameters, Power Series Method for solution of ODEs, Legendre’s Equation, Legendre Polynomials, Bessel’s Equation, Bessels’s functions Jn(x) and Yn(x), Gamma Function"
+          desc: "Ordinary Differential Equations (ODEs): Basic Concepts, Geometric Meaning of y'= f(x, y), Direction Fields, Euler's Method, Separable ODEs, Exact ODEs, Integrating Factors, Linear ODEs, Bernoulli Equation, Population Dynamics, Orthogonal Trajectories, Homogeneous Linear ODEs with Constant Coefficients, Differential Operators, Modeling of Free Oscillations of a Mass-Spring System, Euler–Cauchy Equations, Wronskian, Nonhomogeneous ODEs, Solution by Variation of Parameters, Power Series Method for solution of ODEs, Legendre's Equation, Legendre Polynomials, Bessel's Equation, Bessels's functions Jn(x) and Yn(x), Gamma Function"
         },
         {
           title: "UNIT - III",
-          desc: "Linear Algebra: Matrices and Determinants, Gauss Elimination, Linear Independence, Rank of a Matrix, Vector Space, Solutions of Linear Systems and concept of Existence, Uniqueness, Determinants, Cramer’s Rule, Gauss–Jordan Elimination, The Matrix Eigenvalue Problem, Determining Eigenvalues and Eigenvectors, Symmetric, Skew-Symmetric, and Orthogonal Matrices, Eigenbases, Diagonalization, Quadratic Forms, Cayley – Hamilton Theorem (without proof)"
+          desc: "Linear Algebra: Matrices and Determinants, Gauss Elimination, Linear Independence, Rank of a Matrix, Vector Space, Solutions of Linear Systems and concept of Existence, Uniqueness, Determinants, Cramer's Rule, Gauss–Jordan Elimination, The Matrix Eigenvalue Problem, Determining Eigenvalues and Eigenvectors, Symmetric, Skew-Symmetric, and Orthogonal Matrices, Eigenbases, Diagonalization, Quadratic Forms, Cayley – Hamilton Theorem (without proof)"
         },
         {
           title: "UNIT - IV",
-          desc: "Vector Calculus: Vector and Scalar Functions and Their Fields, Derivatives, Curves, Arc Length, Curvature, Torsion, Gradient of a Scalar Field, Directional Derivative, Divergence of a Vector Field, Curl of a Vector Field, Line Integrals, Path Independence of Line Integrals, Double Integrals, Green’s Theorem in the Plane, Surfaces for Surface Integrals, Surface Integrals, Triple Integrals, Stokes Theorem, Divergence Theorem of Gauss"
+          desc: "Vector Calculus: Vector and Scalar Functions and Their Fields, Derivatives, Curves, Arc Length, Curvature, Torsion, Gradient of a Scalar Field, Directional Derivative, Divergence of a Vector Field, Curl of a Vector Field, Line Integrals, Path Independence of Line Integrals, Double Integrals, Green's Theorem in the Plane, Surfaces for Surface Integrals, Surface Integrals, Triple Integrals, Stokes Theorem, Divergence Theorem of Gauss"
         }
       ],
       "Applied Chemistry": [
@@ -246,72 +246,125 @@ export default function Semester1() {
   const subjectUnits = units[selectedSubject] || [];
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      <div className="bg-[#f1436c] py-6 text-white text-center text-4xl font-bold">
-        CSE - 1st Semester
-      </div>
-
-      <div className="flex justify-center mt-6 space-x-4">
-        {["Syllabus", "Practical", "Notes", "Videos", "PYQs", "Books"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded font-semibold ${
-              activeTab === tab 
-                ? "bg-[#0d1b4c] text-white"
-                : "bg-white border hover:bg-gray-100"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      <div className="max-w-6xl mx-auto mt-8 bg-gradient-to-b from-[#0d1b4c] to-[#1d2e6c] p-6 rounded-lg shadow">
-        <div className="flex flex-col sm:flex-row gap-6">
-          <div className="flex flex-col space-y-2 sm:w-1/4 max-h-[600px] overflow-y-auto">
-            {subjects.map((subject) => (
-              <button
-                key={subject}
-                onClick={() => setSelectedSubject(subject)}
-                className={`text-left px-4 py-3 rounded ${
-                  selectedSubject === subject
-                    ? "bg-white text-[#0d1b4c] font-bold"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {subject}
-              </button>
-            ))}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-100" style={{
+      backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')",
+      backgroundBlendMode: "soft-light"
+    }}>
+      {/* Main content area */}
+      <div className="flex flex-col flex-1">
+        {/* Semester header - Improved style with a more modern gradient and subtle pattern */}
+        <div className="bg-gradient-to-r from-blue-700 via-indigo-800 to-purple-800 py-6 px-6 shadow-lg relative overflow-hidden rounded-lg">
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-10">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full mix-blend-overlay filter blur-xl"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full mix-blend-overlay filter blur-xl"></div>
           </div>
+          <h1 className="text-3xl font-bold text-white text-center relative z-10">CSE - 1st Semester</h1>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400"></div>
+        </div>
 
-          <div className="sm:w-3/4 space-y-4 bg-white p-6 rounded-lg">
-            <h2 className="text-2xl font-bold text-[#0d1b4c] mb-4">
-              {selectedSubject}
-            </h2>
-            <div className="space-y-3">
-              {activeTab === "Syllabus" ? (
-                subjectUnits.map((unit, index) => (
-                  <div
-                    key={index}
-                    className="border-l-4 border-[#f1436c] pl-4 py-3 bg-gray-50 rounded"
-                  >
-                    <h3 className="text-lg font-semibold text-[#0d1b4c]">
-                      {unit.title}
-                    </h3>
-                    <p className="text-gray-700 mt-1">{unit.desc}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-xl text-gray-600 font-semibold mb-2">
-                    {activeTab} section coming soon!
-                  </p>
-                  <p className="text-gray-500">
-                    We're working hard to bring you this content
-                  </p>
+        {/* Tab navigation */}
+        <div className="flex flex-wrap justify-center mt-6 px-4 gap-2 md:space-x-4 z-10">
+          {["Syllabus", "Practical", "Notes", "Videos", "PYQs", "Books"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-5 py-2 rounded-full font-semibold transition-all duration-300 ${
+                activeTab === tab 
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-indigo-500/30"
+                  : "bg-white hover:bg-gray-100 shadow-sm"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Main content with decorative elements */}
+        <div className="flex flex-col items-center justify-center flex-1 py-8 px-6 relative">
+          {/* Decorative blobs */}
+          <div className="absolute top-32 left-1/4 w-24 h-24 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+          <div className="absolute top-32 right-1/4 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-32 left-1/3 w-36 h-36 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+
+          {/* Content area */}
+          <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg p-6 rounded-2xl shadow-xl z-10 w-full max-w-6xl">
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Subject sidebar */}
+              <div className="lg:w-1/4">
+                <h3 className="font-bold text-lg text-gray-700 mb-3 ml-2">Subjects</h3>
+                <div className="space-y-2 max-h-[70vh] overflow-y-auto pr-2 rounded">
+                  {subjects.map((subject) => (
+                    <button
+                      key={subject}
+                      onClick={() => setSelectedSubject(subject)}
+                      className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
+                        selectedSubject === subject
+                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium shadow-md"
+                          : "bg-gray-50 text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {subject}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
+
+              {/* Content display area */}
+              <div className="lg:w-3/4 bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2 border-b">
+                  {selectedSubject}
+                </h2>
+
+                <div className="space-y-4">
+                  {activeTab === "Syllabus" ? (
+                    <>
+                      {subjectUnits.map((unit, index) => (
+                        <div
+                          key={index}
+                          className="bg-gradient-to-r from-gray-50 to-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-400 hover:shadow-md transition-all duration-300"
+                        >
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {unit.title}
+                          </h3>
+                          <p className="text-gray-700 mt-2 leading-relaxed">{unit.desc}</p>
+                        </div>
+                      ))}
+                      
+                      {/* Study tips for the subject */}
+                      <div className="mt-6 bg-blue-50 p-4 rounded-lg">
+                        <h4 className="font-medium text-blue-800 mb-2">Study Tips for {selectedSubject}</h4>
+                        <ul className="text-sm text-blue-700 ml-5 list-disc">
+                          <li>Break down complex topics into smaller, manageable chunks</li>
+                          <li>Use visual aids like diagrams and flowcharts for better retention</li>
+                          <li>Practice solving previous year questions</li>
+                          <li>Form study groups for difficult concepts</li>
+                        </ul>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center py-12 bg-gray-50 rounded-lg">
+                      <div className="w-16 h-16 mx-auto bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </div>
+                      <p className="text-xl text-gray-600 font-semibold mb-2">
+                        {activeTab} section coming soon!
+                      </p>
+                      <p className="text-gray-500">
+                        We're working hard to bring you this content
+                      </p>
+                      <button 
+                        className="mt-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full text-sm hover:shadow-lg transition-all duration-300"
+                        onClick={() => setActiveTab("Syllabus")}
+                      >
+                        Go Back to Syllabus
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>

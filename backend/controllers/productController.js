@@ -124,12 +124,16 @@ const createWhatsAppLink = (phoneNumber, message = '') => {
   return `https://api.whatsapp.com/send/?phone=${formattedNumber}&text=${encodedMessage}`;
 };
 
-// Purchase a product (mark as sold)
+// Purchase a product (mark as sold and notify seller)
 exports.purchaseProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ msg: 'Product not found' });
+    }
+
+    if (product.sold) {
+      return res.status(400).json({ msg: 'This product is already sold' });
     }
 
     product.sold = true;
@@ -144,7 +148,7 @@ exports.purchaseProduct = async (req, res) => {
     let notificationResult = { success: false };
     if (product.whatsappNumber) {
       console.log("Preparing to notify WhatsApp number:", product.whatsappNumber);
-      const message = `🎉 Congratulations! Your product "${product.title}" has been purchased. Someone will contact you soon about payment and delivery arrangements.`;
+      const message = `🎉 Your product "${product.title}" has just been purchased! Expect a contact soon regarding payment and delivery.`;
       notificationResult = await sendWhatsAppNotification(product.whatsappNumber, message);
       console.log("WhatsApp notification result:", notificationResult.success ? "Sent" : "Failed");
     }
@@ -188,7 +192,7 @@ exports.getMySells = async (req, res) => {
   }
 };
 
-// Delete product and its associated image file
+// Delete product and its associated image file (only if not sold)
 exports.deleteProduct = async (req, res) => {
   try {
     const product = await Product.findOne({
@@ -200,11 +204,12 @@ exports.deleteProduct = async (req, res) => {
       return res.status(404).json({ msg: "Product not found or you don't have permission to delete it" });
     }
 
-    const imageUrl = product.image;
-    let filename = null;
-    if (imageUrl) {
-      filename = imageUrl.split('/').pop();
+    if (product.sold) {
+      return res.status(403).json({ msg: "You cannot delete this product as it has already been purchased." });
     }
+
+    const imageUrl = product.image;
+    let filename = imageUrl ? imageUrl.split('/').pop() : null;
 
     await Product.findByIdAndDelete(product._id);
 
