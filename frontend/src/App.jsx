@@ -18,8 +18,9 @@ import Semester3 from "./components/Notes/BTech/CSE/Semesters/Sem3/3";
 import Semester4 from "./components/Notes/BTech/CSE/Semesters/Sem4/4";  
 import Semester5 from "./components/Notes/BTech/CSE/Semesters/Sem5/5";
 import Semester6 from "./components/Notes/BTech/CSE/Semesters/Sem6/6";
-import NightMarket from "./pages/hostellor/night-market";
+import NightMarket from "./pages/hosteller/night-market";
 import GoogleAuthCallback from "./components/GoogleAuthCallback";
+import StudySwap from "./pages/StudySwap";
 
 // Token handler component
 function TokenHandler() {
@@ -60,7 +61,8 @@ function App() {
         <Route path="/notes" element={<Notes />} />
         <Route path="/googleclassroom" element={<GoogleClassroom />} />
         <Route path="/google/callback" element={<GoogleAuthCallback />} />
-        <Route path="/hostellor/night-market" element={<NightMarket />} />
+        <Route path="/hosteller/night-market" element={<NightMarket />} />
+        <Route path="/StudySwap" element={<StudySwap />} />
 
         {/* BTech Notes Routes */}
         <Route path="/notes/btech" element={<BTech />} />
