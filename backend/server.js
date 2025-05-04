@@ -15,12 +15,12 @@ const MONGO_URI = process.env.MONGO_URI;
 const allowedOrigins = [
   'http://localhost:5173',
   'https://student-helper-yaye.vercel.app',
-  'http://localhost:5000',
+  'http://localhost:5000'
 ];
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://student-helper-yaye.vercel.app'],
+  origin: ['http://localhost:5000', 'http://localhost:5173','https://student-helper-yaye.vercel.app'],
   credentials: true
 }));
 
@@ -45,3 +45,4 @@ const startServer = async () => {
 };
 
 startServer();
+

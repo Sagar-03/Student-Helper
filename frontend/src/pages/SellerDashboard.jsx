@@ -22,8 +22,7 @@ export default function SellerDashboard() {
   }, [navigate]);
 
   const topLinks = [
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/marketplace", label: "Marketplace" },
+    
   ];
 
   return (
