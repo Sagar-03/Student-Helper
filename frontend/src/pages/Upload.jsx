@@ -30,8 +30,7 @@ export default function Upload() {
   }, [navigate]);
 
   const topLinks = [
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/marketplace", label: "Marketplace" },
+    
   ];
 
   const sideLinks = [
