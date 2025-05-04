@@ -1,29 +1,35 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const corsMiddleware = require('./middleware/corsMiddleware');
+const cors = require('cors');
 const app = express();
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
-const googleRoutes = require('./routes/googleRoutes');
-const { scheduleNotifications } = require('./cron');
+const googleRoutes = require('./routes/googleRoutes'); // Import Google routes
+const { scheduleNotifications } = require('./cron'); // Import cron scheduler
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-// Apply CORS middleware
-app.use(corsMiddleware);
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://student-helper-yaye.vercel.app',
+  'http://localhost:5000',
+];
 
-// Pre-flight OPTIONS handling for CORS
-app.options('*', corsMiddleware);
+// CORS setup
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
+  credentials: true
+}));
 
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
-app.use('/api/google', googleRoutes);
+app.use('/api/google', googleRoutes); // Mount Google routes
 
 // Initialize cron jobs
 scheduleNotifications();
