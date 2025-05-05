@@ -19,6 +19,25 @@ export default function Auth() {
     { to: "/StudySwap", label: "StudySwap" },
   ];
 
+  // After successful login/registration
+  const handleSuccess = (token, userData) => {
+    sessionStorage.setItem("token", token);
+    // Store user data if needed
+    if (userData) {
+      sessionStorage.setItem("user", JSON.stringify(userData));
+    }
+
+    // Check for redirect path
+    const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+    if (redirectPath) {
+      sessionStorage.removeItem("redirectAfterLogin"); // Clear it after use
+      navigate(redirectPath);
+    } else {
+      // Default redirect
+      navigate("/dashboard");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -31,14 +50,10 @@ export default function Auth() {
           password: form.password,
         });
         // Use sessionStorage instead of localStorage to make auth expire when browser closes
-        sessionStorage.setItem("token", res.data.token);
+        handleSuccess(res.data.token, res.data.user);
 
         // Dispatch authChange event to update other components
         window.dispatchEvent(new Event("authChange"));
-
-        // Decide redirect
-        const redirectTo = location?.state?.from || "/dashboard"; // check if from Seller
-        navigate(redirectTo);
       } else {
         await axios.post("/auth/register", form);
         setIsLogin(true); // After register, switch to login form
@@ -54,21 +69,13 @@ export default function Auth() {
 
   const handleGoogleLogin = () => {
     // Simulating OAuth login
-    sessionStorage.setItem("token", "google-oauth-token");
+    handleSuccess("google-oauth-token", { name: "Google User" });
     window.dispatchEvent(new Event("authChange"));
-
-    setTimeout(() => {
-      const redirectTo = location?.state?.from || "/dashboard";
-      navigate(redirectTo);
-    }, 500);
   };
 
   const handleEmailLogin = () => {
     // This is a placeholder for single-click email login
-    setTimeout(() => {
-      const redirectTo = location?.state?.from || "/dashboard";
-      navigate(redirectTo);
-    }, 500);
+    handleSuccess("email-login-token", { name: "Email User" });
   };
 
   return (
