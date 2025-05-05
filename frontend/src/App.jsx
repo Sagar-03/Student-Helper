@@ -21,6 +21,8 @@ import Semester6 from "./components/Notes/BTech/CSE/Semesters/Sem6/6";
 import NightMarket from "./pages/hosteller/night-market";
 import GoogleAuthCallback from "./components/GoogleAuthCallback";
 import StudySwap from "./pages/StudySwap";
+import BecomeWriter from "./pages/BecomeWriter";
+import FindWriter from "./pages/FindWriter";
 
 // Token handler component
 function TokenHandler() {
@@ -62,7 +64,9 @@ function App() {
         <Route path="/googleclassroom" element={<GoogleClassroom />} />
         <Route path="/google/callback" element={<GoogleAuthCallback />} />
         <Route path="/hosteller/night-market" element={<NightMarket />} />
-        <Route path="/StudySwap" element={<StudySwap />} />
+        <Route path="/studyswap" element={<StudySwap />} />
+        <Route path="/become-writer" element={<BecomeWriter />} />
+        <Route path="/find-writer" element={<FindWriter />} />
 
         {/* BTech Notes Routes */}
         <Route path="/notes/btech" element={<BTech />} />
