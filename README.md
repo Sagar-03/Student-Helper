@@ -1,103 +1,116 @@
-# 📚 Student Helper Web App
+📚 Student Helper Web App
+Welcome to the Student Helper — a comprehensive platform designed to make academic life easier for both day scholars and hostellers. Below is an overview of the core features currently implemented, along with screenshots and explanations of how each one works.
 
-Welcome to the **Student Helper** — a comprehensive platform designed to make academic life easier for both **day scholars** and **hostellers**. Below is an overview of the core features currently implemented, along with screenshots and explanations of how each one works.
+🔐 1. Login & Authentication
 
----
 
-## 🔐 1. Login & Authentication
+Secure login using institutional email and password
 
-![Login Screenshot](./screenshots/login.png)
+JWT-based session handling
 
-The app begins with a **secure login interface** that verifies credentials and directs students to the dashboard. Users can log in using their institutional credentials.
+Input validation and error messages
 
----
+Redirects to the student dashboard upon successful login
 
-## 🏠 2. Dashboard (Role-based Navigation)
+🏠 2. Dashboard (Role-based Navigation)
 
-![Dashboard Screenshot](./screenshots/dashboard.png)
 
-Once logged in, students are taken to a **role-based dashboard**, showing relevant features:
-- Personalized welcome message
-- Quick access to academic and service modules
-- Role-based routes (e.g., Day Scholar vs. Hosteller)
+Personalized welcome message with name and branch
 
----
+Quick access cards for core modules (Marketplace, Resources, etc.)
 
-## 📝 3. Student Information Overview
+Dynamic content based on user role (Day Scholar or Hosteller)
 
-![Student Info Screenshot](./screenshots/student-info.png)
+Notification center for announcements and deadlines
 
-Displays personal details like:
-- Name, Roll No, Branch
-- Attendance & Grades summary
-- Assigned mentor/faculty information
+🏢 3. Hostel Allocation (for Hostellers)
 
----
 
-## 📊 4. Academic Performance Module
+Room allocation details and room number
 
-![Performance Screenshot](./screenshots/academic.png)
+View roommate information
 
-This module allows students to:
-- View their semester grades
-- Check class performance
-- Download performance reports
+Select and manage mess facility options
 
----
+Dashboard view tailored to hosteller needs
 
-## 🏢 5. Hostel Allocation (for Hostellers)
+🛍️ 4. Academic Marketplace
 
-![Hostel Screenshot](./screenshots/hostel.png)
+Buy, sell, or exchange textbooks, lab kits, and stationery
 
-Hostel-related features include:
-- Room allocation details
-- Roommate info
-- Mess facility options
+Filter listings by department, subject, or semester
 
----
+Add new posts with title, condition, price, and images
 
-## 🚌 6. Transport Schedule (for Day Scholars)
+Contact the seller securely through the app
 
-![Transport Screenshot](./screenshots/transport.png)
+🌙 5. Night Market
 
-For day scholars:
-- Bus timing and route allocation
-- Pick-up/drop-off points
-- Transport contact support
+A fast-moving space for everyday items like snacks, chargers, etc.
 
----
+Listings automatically expire in 24 hours
 
-## 📅 7. Academic Calendar & Notifications
+“Need Now” tag for urgent student requests
 
-![Calendar Screenshot](./screenshots/calendar.png)
+Casual, quick-trade platform between students
 
-This shows:
-- Academic deadlines
-- Holidays and events
-- Notifications & announcements
+📂 6. Subject-wise Resources & File Sharing
 
----
 
-## ⚙️ Upcoming Features (Planned)
+Upload and download lecture notes, PDFs, lab manuals, and assignments
 
-🔜 In future versions:
-- Fee Payment Module  
-- Complaint Box / Feedback  
-- Faculty Directory  
-- Study Material Uploads  
-- Internship/Placement Tracker
+Organized by subject code, semester, and type
 
----
+Categorized into Notes, Slides, Past Papers, etc.
 
-## 🛠 Tech Stack
+Upload permissions managed by user roles (student/faculty)
 
-- **Frontend**: React + Chakra UI  
-- **Backend**: Node.js/Express  
-- **Authentication**: JWT  
-- **Database**: MongoDB
+🧑‍🏫 7. Google Classroom Integration
 
----
 
-## 📷 Screenshots Folder
+Connects to Google Classroom using secure OAuth login
 
-Make sure all screenshots used above are saved in a folder named `screenshots` at the root of your project directory:
+Syncs enrolled classes, announcements, and coursework
+
+View deadlines and class materials directly inside the app
+
+Quick link to open assignment in Google Classroom
+
+📁 8. Project File Structure
+bash
+Copy
+Edit
+student-helper/
+│
+├── client/                     # Frontend (React)
+│   ├── public/
+│   └── src/
+│       ├── assets/
+│       ├── components/
+│       ├── pages/
+│       ├── routes/
+│       ├── context/
+│       └── App.jsx
+│
+├── server/                     # Backend (Node.js + Express)
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── index.js
+│
+├── screenshots/                # Screenshot images for README
+├── .env                        # Environment variables
+├── package.json
+└── README.md
+🛠 9. Tech Stack
+Frontend: React
+
+Backend: Node.js + Express
+
+Authentication: Google OAuth
+
+Database: MongoDB (with Mongoose)
+
+APIs: Google Classroom API
+
