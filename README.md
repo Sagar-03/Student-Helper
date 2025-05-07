@@ -66,7 +66,7 @@ Welcome to the **Student Helper** — a comprehensive platform designed to make 
 ```bash
 student-helper/
 │
-├── client/                     # Frontend (React)
+├── client/                     
 │   ├── public/
 │   └── src/
 │       ├── assets/
@@ -76,15 +76,15 @@ student-helper/
 │       ├── context/
 │       └── App.jsx
 │
-├── server/                     # Backend (Node.js + Express)
+├── server/                     
 │   ├── controllers/
 │   ├── models/
 │   ├── routes/
 │   ├── middleware/
 │   └── index.js
 │
-├── screenshots/                # Screenshot images for README
-├── .env                        # Environment variables
+├── screenshots/               
+├── .env                        
 ├── package.json
 └── README.md
 
