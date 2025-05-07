@@ -1,103 +1,102 @@
 # 📚 Student Helper Web App
 
-Welcome to the **Student Helper** — a comprehensive platform designed to make academic life easier for both **day scholars** and **hostellers**. Below is an overview of the core features currently implemented, along with screenshots and explanations of how each one works.
+Welcome to the **Student Helper** — a comprehensive platform designed to make academic life easier for both **day scholars** and **hostellers**. Below is an overview of the core features currently implemented, along with explanations of how each one works.
 
 ---
 
 ## 🔐 1. Login & Authentication
 
-![Login Screenshot](./screenshots/login.png)
+- Secure login using institutional email and password  
+- JWT-based session handling  
+- Input validation and error messages  
+- Redirects to the student dashboard upon successful login
 
-The app begins with a **secure login interface** that verifies credentials and directs students to the dashboard. Users can log in using their institutional credentials.
+[./screenshots/login.png]
 
 ---
 
 ## 🏠 2. Dashboard (Role-based Navigation)
 
-![Dashboard Screenshot](./screenshots/dashboard.png)
+- Personalized welcome message with name and branch  
+- Quick access cards for core modules (Marketplace, Resources, etc.)  
+- Dynamic content based on user role (Day Scholar or Hosteller)  
+- Notification center for announcements and deadlines
+[./screenshots/dashboard.png]
+---
 
-Once logged in, students are taken to a **role-based dashboard**, showing relevant features:
-- Personalized welcome message
-- Quick access to academic and service modules
-- Role-based routes (e.g., Day Scholar vs. Hosteller)
+
+## 🛍️ 5. Academic Marketplace
+
+- Buy, sell, or exchange textbooks, lab kits, and stationery  
+- Filter listings by department, subject, or semester  
+- Add new posts with title, condition, price, and images  
+- Contact the seller securely through the app
+[./screenshots/marketplace.png]
+---
+
+## 🌙 6. Night Market
+
+- A fast-moving space for everyday items like snacks, chargers, etc.  
+- Listings automatically expire in 24 hours  
+- “Need Now” tag for urgent student requests  
+- Casual, quick-trade platform between students
+[./screenshots/night-market.png]
+---
+
+## 📂 7. Subject-wise Resources & File Sharing
+
+- Upload and download lecture notes, PDFs, lab manuals, and assignments  
+- Organized by subject code, semester, and type  
+- Categorized into Notes, Slides, Past Papers, etc.  
+- Upload permissions managed by user roles (student/faculty)
+[./screenshots/notes.png]
+---
+
+## 🧑‍🏫 8. Google Classroom Integration
+
+- Connects to Google Classroom using secure OAuth login  
+- Syncs enrolled classes, announcements, and coursework  
+- View deadlines and class materials directly inside the app  
+- Quick link to open assignments in Google Classroom
+[./screenshots/googleClassroom.png]
+---
+
+## 📁 9. Project File Structure
+
+```bash
+student-helper/
+│
+├── client/                     # Frontend (React)
+│   ├── public/
+│   └── src/
+│       ├── assets/
+│       ├── components/
+│       ├── pages/
+│       ├── routes/
+│       ├── context/
+│       └── App.jsx
+│
+├── server/                     # Backend (Node.js + Express)
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── index.js
+│
+├── screenshots/                # Screenshot images for README
+├── .env                        # Environment variables
+├── package.json
+└── README.md
 
 ---
 
-## 📝 3. Student Information Overview
+🛠 9. Tech Stack
+Frontend: React
 
-![Student Info Screenshot](./screenshots/student-info.png)
+Backend: Node.js + Express
 
-Displays personal details like:
-- Name, Roll No, Branch
-- Attendance & Grades summary
-- Assigned mentor/faculty information
+Authentication: Google OAuth
 
----
+Database: MongoDB (with Mongoose)
 
-## 📊 4. Academic Performance Module
-
-![Performance Screenshot](./screenshots/academic.png)
-
-This module allows students to:
-- View their semester grades
-- Check class performance
-- Download performance reports
-
----
-
-## 🏢 5. Hostel Allocation (for Hostellers)
-
-![Hostel Screenshot](./screenshots/hostel.png)
-
-Hostel-related features include:
-- Room allocation details
-- Roommate info
-- Mess facility options
-
----
-
-## 🚌 6. Transport Schedule (for Day Scholars)
-
-![Transport Screenshot](./screenshots/transport.png)
-
-For day scholars:
-- Bus timing and route allocation
-- Pick-up/drop-off points
-- Transport contact support
-
----
-
-## 📅 7. Academic Calendar & Notifications
-
-![Calendar Screenshot](./screenshots/calendar.png)
-
-This shows:
-- Academic deadlines
-- Holidays and events
-- Notifications & announcements
-
----
-
-## ⚙️ Upcoming Features (Planned)
-
-🔜 In future versions:
-- Fee Payment Module  
-- Complaint Box / Feedback  
-- Faculty Directory  
-- Study Material Uploads  
-- Internship/Placement Tracker
-
----
-
-## 🛠 Tech Stack
-
-- **Frontend**: React + Chakra UI  
-- **Backend**: Node.js/Express  
-- **Authentication**: JWT  
-- **Database**: MongoDB
-
----
-
-## 📷 Screenshots Folder
-
-Make sure all screenshots used above are saved in a folder named `screenshots` at the root of your project directory:
+APIs: Google Classroom API
