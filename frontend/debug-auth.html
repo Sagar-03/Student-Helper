@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Auth URL</title>
+</head>
+<body>
+    <h1>Debug Authentication URL</h1>
+    <button onclick="testAuth()">Test Auth URL Construction</button>
+    <div id="output"></div>
+
+    <script>
+        function testAuth() {
+            // Simulate the same logic as in Auth.jsx
+            const apiUrl = 'https://student-helper-b5j4.onrender.com';
+            const baseUrl = apiUrl.replace(/\/$/, '');
+            const authUrl = `${baseUrl}/api/google/auth?source=auth`;
+            
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                <h3>Debug Info:</h3>
+                <p><strong>API URL:</strong> ${apiUrl}</p>
+                <p><strong>Base URL:</strong> ${baseUrl}</p>
+                <p><strong>Auth URL:</strong> ${authUrl}</p>
+                <p><strong>Would redirect to:</strong> <a href="${authUrl}" target="_blank">${authUrl}</a></p>
+            `;
+            
+            console.log('API URL:', apiUrl);
+            console.log('Base URL:', baseUrl);
+            console.log('Auth URL:', authUrl);
+        }
+    </script>
+</body>
+</html>
