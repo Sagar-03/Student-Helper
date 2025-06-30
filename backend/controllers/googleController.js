@@ -33,6 +33,8 @@ exports.getAuthUrl = (req, res) => {
   try {
     console.log('OAuth getAuthUrl called with environment:', process.env.NODE_ENV);
     console.log('Redirect URI being used:', getRedirectUri());
+    console.log('Request origin:', req.get('Origin'));
+    console.log('Request headers:', req.headers);
     
     // Check if this is coming from the auth page or classroom page via query parameter
     const source = req.query.source || 'classroom'; // Default to classroom for backward compatibility
@@ -45,23 +47,45 @@ exports.getAuthUrl = (req, res) => {
       state: state // Pass state to identify the source
     });
     
-    console.log('Generated auth URL successfully');
+    console.log('Generated auth URL successfully:', url);
     res.redirect(url);
   } catch (error) {
     console.error('Error generating auth URL:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to generate Google authentication URL',
-      error: error.message
+      error: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
 
 // Handle Google OAuth2 callback
 exports.handleCallback = async (req, res) => {
-  const { code, state } = req.query;
+  const { code, state, error: googleError } = req.query;
+  
+  console.log('Google OAuth callback received:', {
+    hasCode: !!code,
+    state,
+    googleError,
+    fullUrl: req.originalUrl
+  });
+  
+  // Handle Google OAuth errors
+  if (googleError) {
+    console.error('Google OAuth error:', googleError);
+    const getFrontendUrl = () => {
+      if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
+        return process.env.PRODUCTION_FRONTEND_URL;
+      }
+      return process.env.FRONTEND_URL || 'http://localhost:5173';
+    };
+    const redirectPath = state === 'auth' ? '/auth' : '/googleclassroom';
+    return res.redirect(`${getFrontendUrl()}${redirectPath}?error=${encodeURIComponent(googleError)}`);
+  }
   
   if (!code) {
+    console.error('Authorization code is missing from callback');
     return res.status(400).json({
       success: false,
       message: 'Authorization code is missing'
@@ -91,7 +115,7 @@ exports.handleCallback = async (req, res) => {
       throw new Error('Received invalid user information from Google');
     }
     
-    console.log('User info retrieved successfully');
+    console.log('User info retrieved successfully for:', userInfo.data.email);
     
     // Generate our own token that includes Google tokens and user info
     const googleToken = jwt.sign(
@@ -116,12 +140,14 @@ exports.handleCallback = async (req, res) => {
         profilePicture: userInfo.data.picture
       });
       await user.save();
+      console.log('Created new user:', user.email);
     } else {
       // Update existing user with latest Google info
       user.name = userInfo.data.name;
       user.googleId = userInfo.data.id;
       user.profilePicture = userInfo.data.picture;
       await user.save();
+      console.log('Updated existing user:', user.email);
     }
     
     // Get frontend URL based on environment
@@ -132,11 +158,19 @@ exports.handleCallback = async (req, res) => {
       return process.env.FRONTEND_URL || 'http://localhost:5173';
     };
     
+    const frontendUrl = getFrontendUrl();
+    console.log('Redirecting to frontend URL:', frontendUrl);
+    
     // Redirect based on the source (auth or classroom)
     const redirectPath = state === 'auth' ? '/auth' : '/googleclassroom';
-    res.redirect(`${getFrontendUrl()}${redirectPath}?token=${googleToken}`);
+    const redirectUrl = `${frontendUrl}${redirectPath}?token=${googleToken}`;
+    console.log('Full redirect URL:', redirectUrl);
+    
+    res.redirect(redirectUrl);
   } catch (error) {
     console.error('Error handling Google callback:', error);
+    console.error('Error stack:', error.stack);
+    
     const getFrontendUrl = () => {
       if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
         return process.env.PRODUCTION_FRONTEND_URL;

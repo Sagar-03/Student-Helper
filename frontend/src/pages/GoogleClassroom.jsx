@@ -109,8 +109,16 @@ export default function GoogleClassroom() {
 
   const handleGoogleLogin = async () => {
     try {
+      setError(null);
+      
+      // Get the correct API URL for the current environment
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const authUrl = `${apiUrl}/api/google/auth`;
+      
+      console.log('Redirecting to Google OAuth:', authUrl);
+      
       // Open in same window to avoid popup blockers
-      window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/google/auth`;
+      window.location.href = authUrl;
     } catch (err) {
       setError({
         type: 'GENERAL',
