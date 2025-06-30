@@ -4,11 +4,19 @@ const path = require('path');
 const User = require(path.join(__dirname, '../models/userModel'));
 const NotificationSubscription = require('../models/notificationSubscriptionModel');
 
-// OAuth2 configuration
+// OAuth2 configuration - dynamically set redirect URI based on environment
+const getRedirectUri = () => {
+  // Check if we're in production or development
+  if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_BACKEND_URL) {
+    return `${process.env.PRODUCTION_BACKEND_URL}/api/google/callback`;
+  }
+  return process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5000/api/google/callback';
+};
+
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
+  getRedirectUri()
 );
 
 // Scopes required for Google Classroom
@@ -23,10 +31,15 @@ const SCOPES = [
 // Generate a redirect URL for Google OAuth2 login
 exports.getAuthUrl = (req, res) => {
   try {
+    // Check if this is coming from the auth page or classroom page via query parameter
+    const source = req.query.source || 'classroom'; // Default to classroom for backward compatibility
+    const state = source === 'auth' ? 'auth' : 'classroom';
+    
     const url = oauth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES,
-      prompt: 'consent' // Force to get refresh token
+      prompt: 'consent', // Force to get refresh token
+      state: state // Pass state to identify the source
     });
     
     res.redirect(url);
@@ -41,7 +54,7 @@ exports.getAuthUrl = (req, res) => {
 
 // Handle Google OAuth2 callback
 exports.handleCallback = async (req, res) => {
-  const { code } = req.query;
+  const { code, state } = req.query;
   
   if (!code) {
     return res.status(400).json({
@@ -106,68 +119,27 @@ exports.handleCallback = async (req, res) => {
       await user.save();
     }
     
-    // Return HTML that sends a message to the opener window and closes itself
-    res.send(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Authentication Successful</title>
-          <script>
-            window.opener.postMessage(
-              { 
-                type: 'googleAuth', 
-                token: '${googleToken}' 
-              }, 
-              '${process.env.FRONTEND_URL}'
-            );
-            window.close();
-          </script>
-        </head>
-        <body>
-          <h1>Authentication Successful!</h1>
-          <p>You can close this window now.</p>
-        </body>
-      </html>
-    `);
+    // Get frontend URL based on environment
+    const getFrontendUrl = () => {
+      if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
+        return process.env.PRODUCTION_FRONTEND_URL;
+      }
+      return process.env.FRONTEND_URL || 'http://localhost:5173';
+    };
+    
+    // Redirect based on the source (auth or classroom)
+    const redirectPath = state === 'auth' ? '/auth' : '/googleclassroom';
+    res.redirect(`${getFrontendUrl()}${redirectPath}?token=${googleToken}`);
   } catch (error) {
     console.error('Error handling Google callback:', error);
-    res.status(500).send(`
-      <html>
-        <head><title>Authentication Failed</title></head>
-        <body>
-          <h1>Authentication Failed</h1>
-          <p>Error: ${error.message}</p>
-          <p>Please try again or contact support.</p>
-        </body>
-      </html>
-    `);
-  }
-};
-
-// Update the callback handler to properly redirect
-exports.googleCallback = async (req, res) => {
-  try {
-    const code = req.query.code;
-    
-    if (!code) {
-      return res.redirect('/googleclassroom?error=Missing_authorization_code');
-    }
-    
-    // Exchange code for tokens
-    const { tokens } = await oauth2Client.getToken(code);
-    
-    // Create our application token that contains Google tokens
-    const jwtToken = jwt.sign({
-      accessToken: tokens.access_token,
-      refreshToken: tokens.refresh_token,
-      expiry: tokens.expiry_date
-    }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    
-    // Redirect to frontend with token
-    res.redirect(`${process.env.FRONTEND_URL}/google/callback?token=${jwtToken}`);
-  } catch (error) {
-    console.error('OAuth callback error:', error);
-    res.redirect('/googleclassroom?error=Authentication_failed');
+    const getFrontendUrl = () => {
+      if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
+        return process.env.PRODUCTION_FRONTEND_URL;
+      }
+      return process.env.FRONTEND_URL || 'http://localhost:5173';
+    };
+    const redirectPath = req.query.state === 'auth' ? '/auth' : '/googleclassroom';
+    res.redirect(`${getFrontendUrl()}${redirectPath}?error=${encodeURIComponent(error.message)}`);
   }
 };
 
@@ -250,6 +222,25 @@ exports.verifyToken = async (req, res) => {
   }
 };
 
+// Helper function to check if Classroom API is enabled
+const checkClassroomAPIEnabled = async (auth) => {
+  try {
+    const classroom = google.classroom({ version: 'v1', auth });
+    // Try a simple API call to check if the API is enabled
+    await classroom.courses.list({ pageSize: 1 });
+    return { enabled: true };
+  } catch (error) {
+    if (error.status === 403 && error.message.includes('API has not been used')) {
+      return { 
+        enabled: false, 
+        error: 'Google Classroom API is not enabled for this project',
+        projectId: error.message.match(/project (\d+)/)?.[1]
+      };
+    }
+    throw error;
+  }
+};
+
 // Get user's Google Classroom courses
 exports.getCourses = async (req, res) => {
   try {
@@ -270,14 +261,46 @@ exports.getCourses = async (req, res) => {
       refresh_token: decoded.refreshToken
     });
     
+    // Check if Classroom API is enabled before proceeding
+    const apiCheck = await checkClassroomAPIEnabled(oauth2Client);
+    if (!apiCheck.enabled) {
+      console.error('Classroom API check failed:', apiCheck);
+      return res.status(403).json({
+        success: false,
+        message: 'Google Classroom API is not enabled',
+        details: apiCheck.error,
+        projectId: apiCheck.projectId,
+        enableUrl: `https://console.developers.google.com/apis/api/classroom.googleapis.com/overview?project=${apiCheck.projectId}`
+      });
+    }
+    
     // Initialize Google Classroom API
     const classroom = google.classroom({ version: 'v1', auth: oauth2Client });
     
-    // Get courses
-    const response = await classroom.courses.list({
-      courseStates: ['ACTIVE', 'ARCHIVED'],
-      pageSize: 20
-    });
+    // Get courses with retry logic
+    let response;
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    while (retryCount < maxRetries) {
+      try {
+        response = await classroom.courses.list({
+          courseStates: ['ACTIVE', 'ARCHIVED'],
+          pageSize: 20
+        });
+        break; // Success, exit the retry loop
+      } catch (error) {
+        retryCount++;
+        console.error(`Attempt ${retryCount} failed to get courses:`, error.message);
+        
+        if (retryCount >= maxRetries) {
+          throw error; // Re-throw if all retries exhausted
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+      }
+    }
     
     // Process course data
     const courses = response.data.courses || [];
@@ -306,6 +329,16 @@ exports.getCourses = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: 'Token expired'
+      });
+    }
+    
+    // Check if it's a Google Classroom API not enabled error
+    if (error.code === 403 && error.errors && error.errors[0]?.reason === 'accessNotConfigured') {
+      return res.status(403).json({
+        success: false,
+        message: 'Google Classroom API is not enabled. Please enable it in Google Cloud Console.',
+        error: 'API_NOT_ENABLED',
+        enableUrl: `https://console.developers.google.com/apis/api/classroom.googleapis.com/overview?project=${process.env.GOOGLE_PROJECT_ID || 'your-project-id'}`
       });
     }
     
@@ -399,6 +432,16 @@ exports.getCourseAssignments = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: 'Token expired'
+      });
+    }
+    
+    // Check if it's a Google Classroom API not enabled error
+    if (error.code === 403 && error.errors && error.errors[0]?.reason === 'accessNotConfigured') {
+      return res.status(403).json({
+        success: false,
+        message: 'Google Classroom API is not enabled. Please enable it in Google Cloud Console.',
+        error: 'API_NOT_ENABLED',
+        enableUrl: `https://console.developers.google.com/apis/api/classroom.googleapis.com/overview?project=${process.env.GOOGLE_PROJECT_ID || 'your-project-id'}`
       });
     }
     
@@ -590,5 +633,55 @@ exports.sendDeadlineNotifications = async () => {
     console.log('Notification check completed');
   } catch (error) {
     console.error('Failed to send deadline notifications:', error);
+  }
+};
+
+// Test endpoint to check Google Classroom API status
+exports.testClassroomAPI = async (req, res) => {
+  try {
+    // Get token from Authorization header
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authorization token is required'
+      });
+    }
+    
+    // Decode token and set credentials
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    oauth2Client.setCredentials({
+      access_token: decoded.accessToken,
+      refresh_token: decoded.refreshToken
+    });
+    
+    // Test the API
+    const apiCheck = await checkClassroomAPIEnabled(oauth2Client);
+    
+    if (apiCheck.enabled) {
+      res.json({
+        success: true,
+        message: 'Google Classroom API is enabled and accessible',
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Google Classroom API is not enabled',
+        details: apiCheck.error,
+        projectId: apiCheck.projectId,
+        enableUrl: `https://console.developers.google.com/apis/api/classroom.googleapis.com/overview?project=${apiCheck.projectId}`,
+        timestamp: new Date().toISOString()
+      });
+    }
+  } catch (error) {
+    console.error('Error testing Classroom API:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to test Google Classroom API',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
   }
 };

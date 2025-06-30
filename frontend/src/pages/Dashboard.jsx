@@ -14,12 +14,14 @@ export default function Dashboard() {
   // Check if user is logged in
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    const googleToken = localStorage.getItem("googleToken");
+    setIsLoggedIn(!!token || !!googleToken);
 
     // Listen for auth changes
     const handleAuthChange = () => {
       const newToken = sessionStorage.getItem("token");
-      setIsLoggedIn(!!newToken);
+      const newGoogleToken = localStorage.getItem("googleToken");
+      setIsLoggedIn(!!newToken || !!newGoogleToken);
     };
 
     window.addEventListener("authChange", handleAuthChange);

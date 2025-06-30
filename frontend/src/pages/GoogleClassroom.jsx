@@ -20,6 +20,7 @@ export default function GoogleClassroom() {
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const token = query.get('token');
+    const error = query.get('error');
     
     if (token) {
       // Store the token and clear URL parameters
@@ -28,6 +29,13 @@ export default function GoogleClassroom() {
       
       // Proceed with authentication
       handleAuthentication(token);
+    } else if (error) {
+      // Handle error from OAuth
+      setError({
+        type: 'GENERAL',
+        message: decodeURIComponent(error)
+      });
+      window.history.replaceState({}, document.title, '/googleclassroom');
     } else {
       // Check if user is already authenticated with Google
       checkGoogleAuth();
@@ -81,13 +89,19 @@ export default function GoogleClassroom() {
           icon: "/favicon.ico"
         });
       } else {
-        setError("Authentication failed. Please try again.");
+        setError({
+          type: 'GENERAL',
+          message: "Authentication failed. Please try again."
+        });
         localStorage.removeItem('googleToken');
         setLoading(false);
       }
     } catch (err) {
       console.error("Error during authentication:", err);
-      setError("Authentication error. Please try again.");
+      setError({
+        type: 'GENERAL',
+        message: "Authentication error. Please try again."
+      });
       localStorage.removeItem('googleToken');
       setLoading(false);
     }
@@ -96,9 +110,12 @@ export default function GoogleClassroom() {
   const handleGoogleLogin = async () => {
     try {
       // Open in same window to avoid popup blockers
-      window.location.href = "http://localhost:5000/api/google/auth";
+      window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/google/auth`;
     } catch (err) {
-      setError("Failed to authenticate with Google. Please try again.");
+      setError({
+        type: 'GENERAL',
+        message: "Failed to authenticate with Google. Please try again."
+      });
       console.error("Google login error:", err);
     }
   };
@@ -154,8 +171,21 @@ export default function GoogleClassroom() {
       }
       
     } catch (err) {
-      setError("Failed to fetch Google Classroom data. Please try again.");
       console.error("Google Classroom data fetch error:", err);
+      
+      // Check if it's an API not enabled error
+      if (err.response?.status === 403 && err.response?.data?.error === 'API_NOT_ENABLED') {
+        setError({
+          type: 'API_NOT_ENABLED',
+          message: err.response.data.message,
+          enableUrl: err.response.data.enableUrl
+        });
+      } else {
+        setError({
+          type: 'GENERAL',
+          message: "Failed to fetch Google Classroom data. Please try again."
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -188,7 +218,10 @@ export default function GoogleClassroom() {
       }
     } catch (err) {
       console.error("Error enabling notifications:", err);
-      setError("Failed to enable notifications. Please try again.");
+      setError({
+        type: 'GENERAL',
+        message: "Failed to enable notifications. Please try again."
+      });
     }
   };
 
@@ -306,8 +339,50 @@ export default function GoogleClassroom() {
             </div>
 
             {error && (
-              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
-                <p>{error}</p>
+              <div className={`border-l-4 p-4 mb-6 rounded ${
+                error.type === 'API_NOT_ENABLED' 
+                  ? 'bg-yellow-100 border-yellow-500 text-yellow-700' 
+                  : 'bg-red-100 border-red-500 text-red-700'
+              }`}>
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    {error.type === 'API_NOT_ENABLED' ? (
+                      <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-medium">
+                      {error.type === 'API_NOT_ENABLED' ? 'Google Classroom API not enabled' : 'Error'}
+                    </p>
+                    <p className="mt-1">
+                      {typeof error === 'string' ? error : error.message}
+                    </p>
+                    {error.type === 'API_NOT_ENABLED' && error.enableUrl && (
+                      <div className="mt-3">
+                        <a 
+                          href={error.enableUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-yellow-700 bg-yellow-200 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                        >
+                          Enable Google Classroom API
+                          <svg className="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                        <p className="mt-2 text-sm">
+                          After enabling the API, wait a few minutes and then try again.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 

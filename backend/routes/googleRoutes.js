@@ -8,6 +8,7 @@ router.get('/callback', googleController.handleCallback);
 router.post('/verify-token', googleController.verifyToken);
 
 // Google Classroom routes
+router.get('/classroom/test', googleController.testClassroomAPI);
 router.get('/classroom/courses', googleController.getCourses);
 router.get('/classroom/courses/:courseId/assignments', googleController.getCourseAssignments);
 router.post('/classroom/enable-notifications', googleController.enableNotifications);
