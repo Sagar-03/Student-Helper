@@ -24,7 +24,7 @@ exports.uploadProduct = async (req, res) => {
       whatsappNumber,
       image: `${BASE_URL}/uploads/${image}`,
       sold: false,
-      postedBy: req.user._id
+      postedBy: req.user.userId
     });
 
     await newProduct.save();
@@ -138,8 +138,8 @@ exports.purchaseProduct = async (req, res) => {
 
     product.sold = true;
 
-    if (req.user && req.user._id) {
-      product.purchasedBy = req.user._id;
+    if (req.user && req.user.userId) {
+      product.purchasedBy = req.user.userId;
       product.purchaseDate = new Date();
     }
 
@@ -171,7 +171,7 @@ exports.purchaseProduct = async (req, res) => {
 exports.getPurchasedProducts = async (req, res) => {
   try {
     const products = await Product.find({
-      purchasedBy: req.user._id
+      purchasedBy: req.user.userId
     }).populate('postedBy', 'name');
 
     res.json(products);
@@ -184,7 +184,7 @@ exports.getPurchasedProducts = async (req, res) => {
 // Get products uploaded by the current user
 exports.getMySells = async (req, res) => {
   try {
-    const products = await Product.find({ postedBy: req.user._id });
+    const products = await Product.find({ postedBy: req.user.userId });
     res.status(200).json(products);
   } catch (error) {
     console.error('Fetch my sells error:', error);

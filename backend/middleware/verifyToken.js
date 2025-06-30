@@ -1,15 +1,19 @@
-// middleware/verifyToken.js
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  const token = req.header('auth-token');
-  if (!token) return res.status(401).json({ msg: 'No token, access denied' });
+  const token = req.headers.authorization?.split(" ")[1]; // Bearer <token>
+  
+  if (!token) {
+    return res.status(401).json({ message: "Access denied. No token provided." });
+  }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Decoded token in verifyToken middleware:', decoded); // Debug log
+    req.user = decoded;
     next();
-  } catch {
-    res.status(400).json({ msg: 'Token not valid' });
+  } catch (err) {
+    console.error('Token verification error:', err); // Debug log
+    res.status(400).json({ message: "Invalid token." });
   }
 };
