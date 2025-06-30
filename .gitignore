@@ -1,3 +1,43 @@
+# Environment variables
 .env
-DEPLOYMENT_FIX.md
+.env.local
+.env.development
 .env.production
+.env.test
+
+# Deployment and sensitive files
+DEPLOYMENT_FIX.md
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
