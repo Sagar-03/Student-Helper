@@ -112,13 +112,17 @@ export default function GoogleClassroom() {
       setError(null);
       
       // Get the correct API URL for the current environment
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const isDevelopment = import.meta.env.MODE === 'development';
+      const apiUrl = isDevelopment 
+        ? 'http://localhost:5000'
+        : 'https://student-helper-b5j4.onrender.com';
       
       // Remove any trailing slash and ensure we don't duplicate /api
       const baseUrl = apiUrl.replace(/\/$/, '');
       const authUrl = `${baseUrl}/api/google/auth?source=classroom`;
       
       console.log('Environment:', import.meta.env.MODE);
+      console.log('Is Development:', isDevelopment);
       console.log('API URL:', apiUrl);
       console.log('Redirecting to Google OAuth:', authUrl);
       
