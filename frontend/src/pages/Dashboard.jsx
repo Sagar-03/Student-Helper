@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "../App.css";
 import Navbar from "../components/Navbar";
 import NavbarSide from "../components/NavbarSide";
-import BackButton from "../components/BackButton";
 import axios from "../axiosConfig";
 
 export default function Dashboard() {
@@ -308,9 +307,6 @@ export default function Dashboard() {
         <div className="w-full">
           <Navbar isLoggedIn={isLoggedIn} />
         </div>
-
-        {/* Back Button */}
-        <BackButton />
 
         {/* Dashboard content */}
         <div className="flex flex-col items-center justify-center flex-1 py-8 px-6">
