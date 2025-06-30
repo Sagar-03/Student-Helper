@@ -15,13 +15,23 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://student-helper-yaye.vercel.app',
-  'http://localhost:5000'
+  'https://student-helper-yave.vercel.app',
+  'http://localhost:5000',
+  'https://student-helper-b5j4.onrender.com'
 ];
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:5000', 'http://localhost:5173','https://student-helper-yaye.vercel.app'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 

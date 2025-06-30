@@ -31,6 +31,9 @@ const SCOPES = [
 // Generate a redirect URL for Google OAuth2 login
 exports.getAuthUrl = (req, res) => {
   try {
+    console.log('OAuth getAuthUrl called with environment:', process.env.NODE_ENV);
+    console.log('Redirect URI being used:', getRedirectUri());
+    
     // Check if this is coming from the auth page or classroom page via query parameter
     const source = req.query.source || 'classroom'; // Default to classroom for backward compatibility
     const state = source === 'auth' ? 'auth' : 'classroom';
@@ -42,12 +45,14 @@ exports.getAuthUrl = (req, res) => {
       state: state // Pass state to identify the source
     });
     
+    console.log('Generated auth URL successfully');
     res.redirect(url);
   } catch (error) {
     console.error('Error generating auth URL:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to generate Google authentication URL'
+      message: 'Failed to generate Google authentication URL',
+      error: error.message
     });
   }
 };
@@ -682,6 +687,36 @@ exports.testClassroomAPI = async (req, res) => {
       message: 'Failed to test Google Classroom API',
       error: error.message,
       timestamp: new Date().toISOString()
+    });
+  }
+};
+
+// Debug endpoint to test OAuth configuration
+exports.debugConfig = (req, res) => {
+  try {
+    const config = {
+      nodeEnv: process.env.NODE_ENV,
+      redirectUri: getRedirectUri(),
+      hasClientId: !!process.env.GOOGLE_CLIENT_ID,
+      hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
+      frontendUrl: process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL 
+        ? process.env.PRODUCTION_FRONTEND_URL 
+        : process.env.FRONTEND_URL || 'http://localhost:5173',
+      backendUrl: process.env.NODE_ENV === 'production' && process.env.PRODUCTION_BACKEND_URL
+        ? process.env.PRODUCTION_BACKEND_URL
+        : 'http://localhost:5000'
+    };
+    
+    res.json({
+      success: true,
+      config: config,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Debug config failed',
+      error: error.message
     });
   }
 };

@@ -6,6 +6,7 @@ const googleController = require('../controllers/googleController');
 router.get('/auth', googleController.getAuthUrl);
 router.get('/callback', googleController.handleCallback);
 router.post('/verify-token', googleController.verifyToken);
+router.get('/debug-config', googleController.debugConfig);
 
 // Google Classroom routes
 router.get('/classroom/test', googleController.testClassroomAPI);
