@@ -88,8 +88,20 @@ export default function Auth() {
     setIsGoogleLoading(true);
     setError("");
     
-    // Redirect to Google OAuth with source parameter to indicate this is from auth page
-    window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/google/auth?source=auth`;
+    try {
+      // Get the correct API URL for the current environment
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const authUrl = `${apiUrl}/api/google/auth?source=auth`;
+      
+      console.log('Redirecting to Google OAuth:', authUrl);
+      
+      // Redirect to Google OAuth with source parameter to indicate this is from auth page
+      window.location.href = authUrl;
+    } catch (err) {
+      console.error('Error initiating Google login:', err);
+      setError('Failed to initiate Google login. Please try again.');
+      setIsGoogleLoading(false);
+    }
   };
 
   const handleEmailLogin = () => {

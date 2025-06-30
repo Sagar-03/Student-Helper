@@ -26,13 +26,24 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
+    // In production, be more permissive for Google OAuth redirects
+    if (process.env.NODE_ENV === 'production') {
+      // Allow all https origins for Google OAuth callback
+      if (origin && (origin.includes('accounts.google.com') || allowedOrigins.indexOf(origin) !== -1)) {
+        return callback(null, true);
+      }
     } else {
-      callback(new Error('Not allowed by CORS'));
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      }
     }
+    
+    console.log('CORS blocked origin:', origin);
+    callback(new Error('Not allowed by CORS'));
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 app.use(express.json());

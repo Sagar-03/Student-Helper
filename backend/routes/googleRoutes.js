@@ -2,6 +2,19 @@ const express = require('express');
 const router = express.Router();
 const googleController = require('../controllers/googleController');
 
+// Health check endpoint for Google OAuth
+router.get('/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Google OAuth service is running',
+    environment: process.env.NODE_ENV,
+    redirectUri: process.env.NODE_ENV === 'production' 
+      ? `${process.env.PRODUCTION_BACKEND_URL}/api/google/callback`
+      : process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5000/api/google/callback',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Route to initiate Google OAuth
 router.get('/auth', googleController.getAuthUrl);
 
