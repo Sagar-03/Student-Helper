@@ -32,12 +32,17 @@ function TokenHandler() {
     const query = new URLSearchParams(location.search);
     const token = query.get('token');
     
-    if (token && location.pathname === '/googleclassroom') {
-      // Store the Google token
-      localStorage.setItem('googleToken', token);
-      
-      // Clean up the URL
-      window.history.replaceState({}, document.title, '/googleclassroom');
+    if (token) {
+      if (location.pathname === '/googleclassroom') {
+        // Store the Google token for classroom
+        localStorage.setItem('googleToken', token);
+        
+        // Clean up the URL
+        window.history.replaceState({}, document.title, '/googleclassroom');
+      } else if (location.pathname === '/auth') {
+        // For auth page, the token will be handled by the Auth component itself
+        // No need to store here, just clean up URL if needed
+      }
     }
   }, [location]);
   
@@ -50,6 +55,7 @@ function App() {
       <TokenHandler />
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
         <Route path="/dashboard" element={<Dashboard />} />

@@ -1,9 +1,8 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../axiosConfig";
 import Navbar from "../components/Navbar";
 import BackButton from "../components/BackButton";
-import React from "react";
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -12,6 +11,7 @@ export default function Auth() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const topLinks = [
     { to: "/dashboard", label: "Dashboard" },
@@ -41,6 +41,25 @@ export default function Auth() {
     }
   };
 
+  // Check for Google OAuth callback on page load
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const token = query.get('token');
+    const error = query.get('error');
+    
+    if (token) {
+      // Google OAuth successful
+      window.history.replaceState({}, document.title, '/auth');
+      handleSuccess(token, { name: "Google User" });
+    } else if (error) {
+      // Google OAuth failed
+      window.history.replaceState({}, document.title, '/auth');
+      setError(decodeURIComponent(error));
+    }
+  }, [location.search]);
+
+  // Removed the Google OAuth message listener since we're using direct redirect now
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -66,9 +85,11 @@ export default function Auth() {
   };
 
   const handleGoogleLogin = () => {
-    // Simulating OAuth login
-    handleSuccess("google-oauth-token", { name: "Google User" });
-    window.dispatchEvent(new Event("authChange"));
+    setIsGoogleLoading(true);
+    setError("");
+    
+    // Redirect to Google OAuth with source parameter to indicate this is from auth page
+    window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/google/auth?source=auth`;
   };
 
   const handleEmailLogin = () => {
@@ -233,20 +254,49 @@ export default function Auth() {
 
             <div className="flex flex-col gap-3">
               <button
-                className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleGoogleLogin}
+                disabled={isGoogleLoading}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="bi bi-google"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
-                </svg>
-                Continue with Google
+                {isGoogleLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Connecting to Google...
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      className="bi bi-google"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+                    </svg>
+                    Continue with Google
+                  </>
+                )}
               </button>
 
               <button
