@@ -91,8 +91,13 @@ export default function Auth() {
     try {
       // Get the correct API URL for the current environment
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const authUrl = `${apiUrl}/api/google/auth?source=auth`;
       
+      // Remove any trailing slash and ensure we don't duplicate /api
+      const baseUrl = apiUrl.replace(/\/$/, '');
+      const authUrl = `${baseUrl}/api/google/auth?source=auth`;
+      
+      console.log('Environment:', import.meta.env.MODE);
+      console.log('API URL:', apiUrl);
       console.log('Redirecting to Google OAuth:', authUrl);
       
       // Redirect to Google OAuth with source parameter to indicate this is from auth page
