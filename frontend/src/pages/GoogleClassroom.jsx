@@ -113,7 +113,7 @@ export default function GoogleClassroom() {
       
       // Get the correct API URL for the current environment
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const authUrl = `${apiUrl}/api/google/auth`;
+      const authUrl = `${apiUrl}/api/google/auth?source=classroom`;
       
       console.log('Redirecting to Google OAuth:', authUrl);
       
