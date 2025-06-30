@@ -27,6 +27,9 @@ export default function Auth() {
       sessionStorage.setItem("user", JSON.stringify(userData));
     }
 
+    // Dispatch authChange event to update other components
+    window.dispatchEvent(new Event("authChange"));
+
     // Check for redirect path
     const redirectPath = sessionStorage.getItem("redirectAfterLogin");
     if (redirectPath) {
@@ -50,18 +53,13 @@ export default function Auth() {
           password: form.password,
         });
         // Use sessionStorage instead of localStorage to make auth expire when browser closes
-        handleSuccess(res.data.token, res.data.user);
-
-        // Dispatch authChange event to update other components
-        window.dispatchEvent(new Event("authChange"));
+        handleSuccess(res.data.data.token, res.data.data);
       } else {
-        await axios.post("/auth/register", form);
-        setIsLogin(true); // After register, switch to login form
-        setForm({ ...form, password: "" }); // Clear password only
-        setError("Registration successful! Please log in.");
-      }
-    } catch (err) {
-      setError(err.response?.data?.msg || err.message);
+        const res = await axios.post("/auth/register", form);
+        // Automatically log in the user after successful registration
+        handleSuccess(res.data.data.token, res.data.data);
+      }    } catch (err) {
+      setError(err.response?.data?.message || err.response?.data?.msg || err.message);
     } finally {
       setIsLoading(false);
     }

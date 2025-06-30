@@ -7,6 +7,7 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
 const googleRoutes = require('./routes/googleRoutes'); // Import Google routes
+const studySwapRoutes = require('./routes/studyswap'); // Import StudySwap routes
 const { scheduleNotifications } = require('./cron'); // Import cron scheduler
 
 const PORT = process.env.PORT || 5000;
@@ -30,6 +31,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/google', googleRoutes); // Mount Google routes
+app.use('/api/studyswap', studySwapRoutes); // Mount StudySwap routes
 
 // Initialize cron jobs
 scheduleNotifications();

@@ -22,11 +22,24 @@ exports.createWriterService = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
     
+    // Check if user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+    
+    // Try both userId and _id fields for compatibility
+    const userId = req.user.userId || req.user._id;
+    
+    if (!userId) {
+      console.error('No userId found in token:', req.user);
+      return res.status(401).json({ message: 'Invalid user token - missing userId' });
+    }
+    
     // Convert expertise string to array if needed
     const expertiseArray = Array.isArray(expertise) ? expertise : expertise.split(',').map(item => item.trim());
     
     const newWriterService = new WriterService({
-      userId: req.user._id,
+      userId: userId,
       name,
       title,
       expertise: expertiseArray,
@@ -63,11 +76,14 @@ exports.updateWriterService = async (req, res) => {
   try {
     const { name, title, expertise, rate, contact } = req.body;
     
+    // Try both userId and _id fields for compatibility
+    const userId = req.user.userId || req.user._id;
+    
     // Convert expertise string to array if needed
     const expertiseArray = expertise && (Array.isArray(expertise) ? expertise : expertise.split(',').map(item => item.trim()));
     
     const writerService = await WriterService.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
+      { _id: req.params.id, userId: userId },
       { 
         name, 
         title, 
@@ -92,9 +108,12 @@ exports.updateWriterService = async (req, res) => {
 
 exports.deleteWriterService = async (req, res) => {
   try {
+    // Try both userId and _id fields for compatibility
+    const userId = req.user.userId || req.user._id;
+    
     const writerService = await WriterService.findOneAndDelete({
       _id: req.params.id,
-      userId: req.user._id
+      userId: userId
     });
     
     if (!writerService) {
@@ -129,8 +148,21 @@ exports.createAssignmentRequest = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
     
+    // Check if user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+    
+    // Try both userId and _id fields for compatibility
+    const userId = req.user.userId || req.user._id;
+    
+    if (!userId) {
+      console.error('No userId found in token:', req.user);
+      return res.status(401).json({ message: 'Invalid user token - missing userId' });
+    }
+    
     const newAssignmentRequest = new AssignmentRequest({
-      userId: req.user._id,
+      userId: userId,
       title,
       subject,
       deadline,
@@ -167,8 +199,11 @@ exports.updateAssignmentRequest = async (req, res) => {
   try {
     const { title, subject, deadline, budget, pages, requirements, contact, status } = req.body;
     
+    // Try both userId and _id fields for compatibility
+    const userId = req.user.userId || req.user._id;
+    
     const assignmentRequest = await AssignmentRequest.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
+      { _id: req.params.id, userId: userId },
       { 
         title, 
         subject, 
@@ -196,9 +231,12 @@ exports.updateAssignmentRequest = async (req, res) => {
 
 exports.deleteAssignmentRequest = async (req, res) => {
   try {
+    // Try both userId and _id fields for compatibility
+    const userId = req.user.userId || req.user._id;
+    
     const assignmentRequest = await AssignmentRequest.findOneAndDelete({
       _id: req.params.id,
-      userId: req.user._id
+      userId: userId
     });
     
     if (!assignmentRequest) {
