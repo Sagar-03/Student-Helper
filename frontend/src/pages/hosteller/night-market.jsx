@@ -19,9 +19,7 @@ export default function NightMarket() {
     navigate("/all-products");
   };
 
-  const topLinks = [
-    
-  ];
+  const topLinks = [];
 
   // Features of the night marketplace
   const features = [
@@ -245,68 +243,6 @@ export default function NightMarket() {
                 Connect with others and finish your transaction
               </p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Section */}
-      <section className="bg-gray-100 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-            Night Market Community Impact
-          </h2>
-          <p className="text-center text-gray-700 max-w-2xl mx-auto mb-8">
-            Join thousands of night owls who have already discovered a better
-            way to learn after hours
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h3 className="text-4xl font-bold text-indigo-600">1000+</h3>
-              <p className="mt-2 text-lg font-medium text-gray-700">
-                Positive Impacts
-              </p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-indigo-600">1000+</h3>
-              <p className="mt-2 text-lg font-medium text-gray-700">
-                Student Success Stories
-              </p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-indigo-600">1000+</h3>
-              <p className="mt-2 text-lg font-medium text-gray-700">
-                Lives Changed
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action - More Compact */}
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 py-8 text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-white mb-3">
-            Join the Night Market
-          </h2>
-          <p className="text-blue-100 mb-5 max-w-xl mx-auto text-sm">
-            Connect with fellow night owls and discover resources specially
-            designed for after-hours studying
-          </p>
-
-          <div className="flex flex-row gap-4 justify-center">
-            <button
-              onClick={handleSellClick}
-              className="bg-white text-indigo-600 px-5 py-2 rounded-lg hover:shadow-lg transition font-medium text-sm"
-            >
-              Start Selling
-            </button>
-
-            <button
-              onClick={handleBuyClick}
-              className="bg-transparent border border-white text-white px-5 py-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition font-medium text-sm"
-            >
-              Browse Products
-            </button>
           </div>
         </div>
       </div>

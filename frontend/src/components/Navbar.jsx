@@ -39,7 +39,7 @@ export default function Navbar({ links = [] }) {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-gradient-to-r from-[#12101D] to-[#1D1A32] text-white m-4 px-6 py-4 flex flex-col md:flex-row justify-between items-center rounded-2xl shadow-lg z-40 relative">
+      <nav className="bg-gradient-to-r from-[#12101D] to-[#1D1A32] text-white w-[60%] mx-auto m-4 px-6 py-4 flex flex-col md:flex-row justify-between items-center rounded-2xl shadow-2xl  z-40 relative">
         <div className="flex items-center justify-between w-full md:w-auto">
           <Link to="/dashboard" className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
             Student-Helper
