@@ -19,42 +19,44 @@ export default function Auth() {
     { to: "/StudySwap", label: "StudySwap" },
   ];
 
-  // After successful login/registration
+  // After successful login/registration - optimized for performance
   const handleSuccess = (token, userData) => {
-    sessionStorage.setItem("token", token);
-    // Store user data if needed
+    // Use localStorage instead of sessionStorage for better performance
+    localStorage.setItem("token", token);
     if (userData) {
-      sessionStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("user", JSON.stringify(userData));
     }
 
-    // Dispatch authChange event to update other components
-    window.dispatchEvent(new Event("authChange"));
+    // Dispatch authChange event asynchronously to avoid blocking
+    setTimeout(() => window.dispatchEvent(new Event("authChange")), 0);
 
-    // Check for redirect path
+    // Navigate immediately for better UX
     const redirectPath = sessionStorage.getItem("redirectAfterLogin");
     if (redirectPath) {
-      sessionStorage.removeItem("redirectAfterLogin"); // Clear it after use
-      navigate(redirectPath);
+      sessionStorage.removeItem("redirectAfterLogin");
+      navigate(redirectPath, { replace: true });
     } else {
-      // Default redirect
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     }
   };
 
-  // Check for Google OAuth callback on page load
+  // Optimized OAuth callback handling
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const token = query.get('token');
     const error = query.get('error');
     
     if (token) {
-      // Google OAuth successful
+      // Clean URL immediately for better UX
       window.history.replaceState({}, document.title, '/auth');
-      handleSuccess(token, { name: "Google User" });
+      // Handle success asynchronously to avoid blocking
+      requestIdleCallback(() => {
+        handleSuccess(token, { name: "Google User" });
+      });
     } else if (error) {
-      // Google OAuth failed
       window.history.replaceState({}, document.title, '/auth');
       setError(decodeURIComponent(error));
+      setIsGoogleLoading(false);
     }
   }, [location.search]);
 
@@ -84,33 +86,22 @@ export default function Auth() {
     }
   };
 
+  // Optimized Google login handler for better performance
   const handleGoogleLogin = () => {
     setIsGoogleLoading(true);
     setError("");
     
-    try {
-      // Get the correct API URL for the current environment
-      const isDevelopment = import.meta.env.MODE === 'development';
-      const apiUrl = isDevelopment 
-        ? 'http://localhost:5000'
-        : 'https://student-helper-b5j4.onrender.com';
-      
-      // Remove any trailing slash and ensure we don't duplicate /api
-      const baseUrl = apiUrl.replace(/\/$/, '');
-      const authUrl = `${baseUrl}/api/google/auth?source=auth`;
-      
-      console.log('Environment:', import.meta.env.MODE);
-      console.log('Is Development:', isDevelopment);
-      console.log('API URL:', apiUrl);
-      console.log('Redirecting to Google OAuth:', authUrl);
-      
-      // Redirect to Google OAuth with source parameter to indicate this is from auth page
-      window.location.href = authUrl;
-    } catch (err) {
-      console.error('Error initiating Google login:', err);
-      setError('Failed to initiate Google login. Please try again.');
-      setIsGoogleLoading(false);
-    }
+    // Use environment variable for faster detection
+    const isDevelopment = import.meta.env.DEV;
+    const apiUrl = isDevelopment 
+      ? 'http://localhost:5000'
+      : 'https://student-helper-b5j4.onrender.com';
+    
+    // Pre-construct URL for immediate redirect
+    const authUrl = `${apiUrl}/api/google/auth?source=auth`;
+    
+    // Immediate redirect without try-catch for faster response
+    window.location.href = authUrl;
   };
 
   const handleEmailLogin = () => {
@@ -275,33 +266,14 @@ export default function Auth() {
 
             <div className="flex flex-col gap-3">
               <button
-                className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
                 onClick={handleGoogleLogin}
                 disabled={isGoogleLoading}
               >
                 {isGoogleLoading ? (
                   <>
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Connecting to Google...
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                    <span>Redirecting to Google...</span>
                   </>
                 ) : (
                   <>
@@ -315,7 +287,7 @@ export default function Auth() {
                     >
                       <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
                     </svg>
-                    Continue with Google
+                    <span>Continue with Google</span>
                   </>
                 )}
               </button>

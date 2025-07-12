@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Study Note</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+            margin: 2rem;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #4F46E5;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            color: #4F46E5;
+            margin: 0;
+            font-size: 2rem;
+        }
+        .header p {
+            color: #666;
+            font-style: italic;
+        }
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .unit-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+        .topic {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-left: 4px solid #4F46E5;
+            background: #f8fafc;
+        }
+        .topic h3 {
+            color: #4F46E5;
+            margin: 0 0 0.5rem 0;
+        }
+        .formula {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+        }
+        .note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        .note strong {
+            color: #92400e;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Sample Study Notes</h1>
+        <p>CSE 1st Semester - Applied Physics I</p>
+        <p>Unit-wise Study Material</p>
+    </div>
+
+    <div class="content">
+        <div class="unit-title">
+            <h2>UNIT - I: Thermodynamics Fundamentals</h2>
+        </div>
+
+        <div class="topic">
+            <h3>1. Basic Concepts of Thermodynamics</h3>
+            <p>Thermodynamics is the branch of physics that deals with the relationships between heat and other forms of energy.</p>
+            
+            <div class="note">
+                <strong>Key Point:</strong> A thermodynamic system is any collection of matter within prescribed and identifiable boundaries.
+            </div>
+
+            <h4>Types of Systems:</h4>
+            <ul>
+                <li><strong>Open System:</strong> Mass and energy can cross the boundary</li>
+                <li><strong>Closed System:</strong> Only energy can cross the boundary</li>
+                <li><strong>Isolated System:</strong> Neither mass nor energy can cross the boundary</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>2. Zeroth Law of Thermodynamics</h3>
+            <p>If two systems are in thermal equilibrium with a third system, they are in thermal equilibrium with each other.</p>
+            
+            <div class="note">
+                <strong>Importance:</strong> This law provides the basis for temperature measurement.
+            </div>
+        </div>
+
+        <div class="topic">
+            <h3>3. First Law of Thermodynamics</h3>
+            <p>Energy cannot be created or destroyed, only transformed from one form to another.</p>
+            
+            <div class="formula">
+                ΔU = Q - W
+                <br><br>
+                Where:
+                <br>ΔU = Change in internal energy
+                <br>Q = Heat added to system
+                <br>W = Work done by system
+            </div>
+        </div>
+
+        <div class="topic">
+            <h3>4. Second Law of Thermodynamics</h3>
+            <p>The entropy of an isolated system never decreases; it either increases or remains constant.</p>
+            
+            <div class="formula">
+                dS ≥ dQ/T
+                <br><br>
+                For reversible processes: dS = dQ/T
+                <br>For irreversible processes: dS > dQ/T
+            </div>
+
+            <div class="note">
+                <strong>Applications:</strong> Heat engines, refrigerators, and heat pumps all operate based on the second law.
+            </div>
+        </div>
+
+        <div class="topic">
+            <h3>5. Entropy</h3>
+            <p>Entropy is a measure of the randomness or disorder of a system.</p>
+            
+            <h4>Properties of Entropy:</h4>
+            <ul>
+                <li>It is a state function</li>
+                <li>It increases for irreversible processes</li>
+                <li>It remains constant for reversible adiabatic processes</li>
+                <li>It can be used to determine the direction of spontaneous processes</li>
+            </ul>
+        </div>
+
+        <div class="topic">
+            <h3>6. Work and Heat</h3>
+            <p>Work and heat are both forms of energy transfer, but they differ in their nature:</p>
+            
+            <h4>Work (W):</h4>
+            <ul>
+                <li>Organized energy transfer</li>
+                <li>Can be completely converted to other forms</li>
+                <li>Boundary work: W = ∫ P dV</li>
+            </ul>
+
+            <h4>Heat (Q):</h4>
+            <ul>
+                <li>Disorganized energy transfer</li>
+                <li>Occurs due to temperature difference</li>
+                <li>Cannot be completely converted to work (Kelvin-Planck statement)</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Study Tips:</strong>
+            <ul>
+                <li>Practice solving problems involving PV diagrams</li>
+                <li>Understand the difference between state and path functions</li>
+                <li>Memorize important formulas and their applications</li>
+                <li>Focus on conceptual understanding of entropy</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Student Helper | Educational Material</p>
+        <p>This is a sample study note demonstrating the PDF viewer functionality</p>
+    </footer>
+</body>
+</html>

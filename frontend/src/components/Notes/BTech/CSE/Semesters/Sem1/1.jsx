@@ -242,8 +242,339 @@ export default function Semester1() {
     },
   };
 
+  // PDF data for each subject and unit
+  const pdfData = {
+    "Applied Physics 1": {
+      "UNIT - I": [
+        { name: "Thermodynamics Introduction", path: "/pdfs/cse/sem1/applied-physics-1/unit1/thermodynamics-intro.html" },
+        { name: "Heat and Work Problems", path: "/pdfs/cse/sem1/applied-physics-1/unit1/heat-work-problems.html" },
+        { name: "Laws of Thermodynamics", path: "/pdfs/sample-note.html" },
+        { name: "Entropy and Applications", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Waves and Oscillations", path: "/pdfs/cse/sem1/applied-physics-1/unit2/waves-oscillations.html" },
+        { name: "Maxwell's Equations", path: "/pdfs/sample-note.html" },
+        { name: "Electromagnetic Waves", path: "/pdfs/sample-note.html" },
+        { name: "Poynting Theorem", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Interference and Diffraction", path: "/pdfs/cse/sem1/applied-physics-1/unit3/interference-diffraction.html" },
+        { name: "Young's Double Slit", path: "/pdfs/sample-note.html" },
+        { name: "Diffraction Theory", path: "/pdfs/sample-note.html" },
+        { name: "Polarization of Light", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Relativity and Laser Physics", path: "/pdfs/cse/sem1/applied-physics-1/unit4/relativity-laser.html" },
+        { name: "Lorentz Transformations", path: "/pdfs/sample-note.html" },
+        { name: "Laser Physics", path: "/pdfs/sample-note.html" },
+        { name: "Einstein Coefficients", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Applied Mathematics 1": {
+      "UNIT - I": [
+        { name: "Partial Derivatives", path: "/pdfs/cse/sem1/applied-mathematics-1/unit1/partial-derivatives.html" },
+        { name: "Chain Rule Applications", path: "/pdfs/sample-note.html" },
+        { name: "Jacobians", path: "/pdfs/sample-note.html" },
+        { name: "Lagrange Multipliers", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Multiple Integrals", path: "/pdfs/sample-note.html" },
+        { name: "Double Integrals", path: "/pdfs/sample-note.html" },
+        { name: "Triple Integrals", path: "/pdfs/sample-note.html" },
+        { name: "Change of Variables", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Vector Calculus", path: "/pdfs/sample-note.html" },
+        { name: "Line Integrals", path: "/pdfs/sample-note.html" },
+        { name: "Green's Theorem", path: "/pdfs/sample-note.html" },
+        { name: "Divergence Theorem", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Fourier Series", path: "/pdfs/sample-note.html" },
+        { name: "Complex Fourier", path: "/pdfs/sample-note.html" },
+        { name: "Fourier Transform", path: "/pdfs/sample-note.html" },
+        { name: "Applications", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Applied Chemistry": {
+      "UNIT - I": [
+        { name: "Fuels Classification", path: "/pdfs/sample-note.html" },
+        { name: "Calorific Values", path: "/pdfs/sample-note.html" },
+        { name: "Coal Analysis", path: "/pdfs/sample-note.html" },
+        { name: "Petroleum Products", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Phase Rule", path: "/pdfs/sample-note.html" },
+        { name: "Gibbs Phase Rule", path: "/pdfs/sample-note.html" },
+        { name: "Polymers", path: "/pdfs/sample-note.html" },
+        { name: "Plastics and Properties", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Water Quality", path: "/pdfs/sample-note.html" },
+        { name: "Water Hardness", path: "/pdfs/sample-note.html" },
+        { name: "Boiler Problems", path: "/pdfs/sample-note.html" },
+        { name: "Water Treatment", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Corrosion Theory", path: "/pdfs/sample-note.html" },
+        { name: "Corrosion Control", path: "/pdfs/sample-note.html" },
+        { name: "Green Chemistry", path: "/pdfs/sample-note.html" },
+        { name: "Nano Chemistry", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Manufacturing Processes": {
+      "UNIT - I": [
+        { name: "Manufacturing Overview", path: "/pdfs/sample-note.html" },
+        { name: "Metal Casting", path: "/pdfs/sample-note.html" },
+        { name: "Sand Casting", path: "/pdfs/sample-note.html" },
+        { name: "Casting Defects", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Welding Principles", path: "/pdfs/sample-note.html" },
+        { name: "Gas Welding", path: "/pdfs/sample-note.html" },
+        { name: "Arc Welding", path: "/pdfs/sample-note.html" },
+        { name: "TIG and MIG Welding", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Deformation Processes", path: "/pdfs/sample-note.html" },
+        { name: "Forging Operations", path: "/pdfs/sample-note.html" },
+        { name: "Rolling and Drawing", path: "/pdfs/sample-note.html" },
+        { name: "Sheet Metal Work", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Powder Metallurgy", path: "/pdfs/sample-note.html" },
+        { name: "Plastic Manufacturing", path: "/pdfs/sample-note.html" },
+        { name: "Injection Molding", path: "/pdfs/sample-note.html" },
+        { name: "Thermoforming", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Communication Skills": {
+      "UNIT - I": [
+        { name: "Communication Basics", path: "/pdfs/sample-note.html" },
+        { name: "Verbal Communication", path: "/pdfs/sample-note.html" },
+        { name: "Non-verbal Communication", path: "/pdfs/sample-note.html" },
+        { name: "Group Discussions", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Spoken English", path: "/pdfs/sample-note.html" },
+        { name: "Written English", path: "/pdfs/sample-note.html" },
+        { name: "Etiquette and Manners", path: "/pdfs/sample-note.html" },
+        { name: "Vocabulary Development", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Letter Writing", path: "/pdfs/sample-note.html" },
+        { name: "Business Correspondence", path: "/pdfs/sample-note.html" },
+        { name: "Technical Reports", path: "/pdfs/sample-note.html" },
+        { name: "Speech Delivery", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Grammar Fundamentals", path: "/pdfs/sample-note.html" },
+        { name: "Tenses and Voice", path: "/pdfs/sample-note.html" },
+        { name: "Direct Indirect Speech", path: "/pdfs/sample-note.html" },
+        { name: "Common Errors", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Engineering Graphics": {
+      "UNIT - I": [
+        { name: "Drawing Instruments", path: "/pdfs/sample-note.html" },
+        { name: "Engineering Drawing", path: "/pdfs/sample-note.html" },
+        { name: "Projection Theory", path: "/pdfs/sample-note.html" },
+        { name: "Point Projections", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Line Projections", path: "/pdfs/sample-note.html" },
+        { name: "True Length Methods", path: "/pdfs/sample-note.html" },
+        { name: "Line Orientations", path: "/pdfs/sample-note.html" },
+        { name: "Traces of Lines", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Plane Projections", path: "/pdfs/sample-note.html" },
+        { name: "Plane Inclinations", path: "/pdfs/sample-note.html" },
+        { name: "Auxiliary Planes", path: "/pdfs/sample-note.html" },
+        { name: "Oblique Planes", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Solid Projections", path: "/pdfs/sample-note.html" },
+        { name: "Prism and Pyramid", path: "/pdfs/sample-note.html" },
+        { name: "Surface Development", path: "/pdfs/sample-note.html" },
+        { name: "Development Methods", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Engineering Mechanics": {
+      "UNIT - I": [
+        { name: "Force Systems", path: "/pdfs/sample-note.html" },
+        { name: "Equilibrium Conditions", path: "/pdfs/sample-note.html" },
+        { name: "Distributed Forces", path: "/pdfs/sample-note.html" },
+        { name: "Center of Gravity", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Truss Analysis", path: "/pdfs/sample-note.html" },
+        { name: "Method of Joints", path: "/pdfs/sample-note.html" },
+        { name: "Friction Laws", path: "/pdfs/sample-note.html" },
+        { name: "Friction Applications", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Particle Kinematics", path: "/pdfs/sample-note.html" },
+        { name: "Curvilinear Motion", path: "/pdfs/sample-note.html" },
+        { name: "Particle Kinetics", path: "/pdfs/sample-note.html" },
+        { name: "Work-Energy Theorem", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Rigid Body Kinematics", path: "/pdfs/sample-note.html" },
+        { name: "Relative Motion", path: "/pdfs/sample-note.html" },
+        { name: "Rigid Body Kinetics", path: "/pdfs/sample-note.html" },
+        { name: "Beam Analysis", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Electrical Science": {
+      "UNIT - I": [
+        { name: "DC Circuit Analysis", path: "/pdfs/sample-note.html" },
+        { name: "Kirchhoff's Laws", path: "/pdfs/sample-note.html" },
+        { name: "Network Theorems", path: "/pdfs/sample-note.html" },
+        { name: "First Order Circuits", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "AC Fundamentals", path: "/pdfs/sample-note.html" },
+        { name: "Phasor Analysis", path: "/pdfs/sample-note.html" },
+        { name: "AC Circuits", path: "/pdfs/sample-note.html" },
+        { name: "Three Phase Systems", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "DC Machines", path: "/pdfs/sample-note.html" },
+        { name: "Motor Speed Control", path: "/pdfs/sample-note.html" },
+        { name: "AC Machines", path: "/pdfs/sample-note.html" },
+        { name: "Induction Motors", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Transformers", path: "/pdfs/sample-note.html" },
+        { name: "Transformer Analysis", path: "/pdfs/sample-note.html" },
+        { name: "Measuring Instruments", path: "/pdfs/sample-note.html" },
+        { name: "Instrument Types", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Environmental Science": {
+      "UNIT - I": [
+        { name: "Environmental Studies", path: "/pdfs/sample-note.html" },
+        { name: "Natural Resources", path: "/pdfs/sample-note.html" },
+        { name: "Ecosystem Structure", path: "/pdfs/sample-note.html" },
+        { name: "Biodiversity", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Air Pollution", path: "/pdfs/sample-note.html" },
+        { name: "Water Pollution", path: "/pdfs/sample-note.html" },
+        { name: "Noise Pollution", path: "/pdfs/sample-note.html" },
+        { name: "Waste Management", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Sustainable Development", path: "/pdfs/sample-note.html" },
+        { name: "Urban Problems", path: "/pdfs/sample-note.html" },
+        { name: "Climate Change", path: "/pdfs/sample-note.html" },
+        { name: "Environmental Laws", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Population Growth", path: "/pdfs/sample-note.html" },
+        { name: "Human Rights", path: "/pdfs/sample-note.html" },
+        { name: "Health and Environment", path: "/pdfs/sample-note.html" },
+        { name: "IT Role", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Human Values and Professional Ethics": {
+      "UNIT - I": [
+        { name: "Human Values", path: "/pdfs/sample-note.html" },
+        { name: "Work Ethics", path: "/pdfs/sample-note.html" },
+        { name: "Professional Virtues", path: "/pdfs/sample-note.html" },
+        { name: "Workplace Challenges", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Engineering Ethics", path: "/pdfs/sample-note.html" },
+        { name: "Moral Issues", path: "/pdfs/sample-note.html" },
+        { name: "Professional Roles", path: "/pdfs/sample-note.html" },
+        { name: "Ethical Theories", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Safety and Risk", path: "/pdfs/sample-note.html" },
+        { name: "Employee Rights", path: "/pdfs/sample-note.html" },
+        { name: "Whistleblowing", path: "/pdfs/sample-note.html" },
+        { name: "Intellectual Property", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Globalization Ethics", path: "/pdfs/sample-note.html" },
+        { name: "Computer Ethics", path: "/pdfs/sample-note.html" },
+        { name: "Professional Codes", path: "/pdfs/sample-note.html" },
+        { name: "Business Ethics", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Indian Constitution": {
+      "UNIT - I": [
+        { name: "Constitution Introduction", path: "/pdfs/sample-note.html" },
+        { name: "Framing Process", path: "/pdfs/sample-note.html" },
+        { name: "Salient Features", path: "/pdfs/sample-note.html" },
+        { name: "Preamble", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Fundamental Rights", path: "/pdfs/sample-note.html" },
+        { name: "Rights to Equality", path: "/pdfs/sample-note.html" },
+        { name: "Directive Principles", path: "/pdfs/sample-note.html" },
+        { name: "Fundamental Duties", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Executive Powers", path: "/pdfs/sample-note.html" },
+        { name: "President and Governor", path: "/pdfs/sample-note.html" },
+        { name: "Union Judiciary", path: "/pdfs/sample-note.html" },
+        { name: "Supreme Court", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "Centre-State Relations", path: "/pdfs/sample-note.html" },
+        { name: "Federal Structure", path: "/pdfs/sample-note.html" },
+        { name: "Legislative Relations", path: "/pdfs/sample-note.html" },
+        { name: "Financial Relations", path: "/pdfs/sample-note.html" }
+      ]
+    },
+    "Programming in C": {
+      "UNIT - I": [
+        { name: "C Programming Basics", path: "/pdfs/sample-note.html" },
+        { name: "Data Types and Variables", path: "/pdfs/sample-note.html" },
+        { name: "Operators and Expressions", path: "/pdfs/sample-note.html" },
+        { name: "Input/Output Operations", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - II": [
+        { name: "Control Structures", path: "/pdfs/sample-note.html" },
+        { name: "Loops and Conditions", path: "/pdfs/sample-note.html" },
+        { name: "Arrays", path: "/pdfs/sample-note.html" },
+        { name: "Functions", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - III": [
+        { name: "Pointers", path: "/pdfs/sample-note.html" },
+        { name: "Dynamic Memory", path: "/pdfs/sample-note.html" },
+        { name: "Structures and Unions", path: "/pdfs/sample-note.html" },
+        { name: "File Handling", path: "/pdfs/sample-note.html" }
+      ],
+      "UNIT - IV": [
+        { name: "C99 Extensions", path: "/pdfs/sample-note.html" },
+        { name: "Standard Libraries", path: "/pdfs/sample-note.html" },
+        { name: "Basic Algorithms", path: "/pdfs/sample-note.html" },
+        { name: "Sorting and Searching", path: "/pdfs/sample-note.html" }
+      ]
+    }
+  };
+
   const { subjects, units } = semesterData;
   const subjectUnits = units[selectedSubject] || [];
+
+  // PDF handling functions
+  const handleDownload = (pdfPath, pdfName) => {
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = pdfName || 'document.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleView = (pdfPath) => {
+    window.open(pdfPath, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div
@@ -362,6 +693,133 @@ export default function Semester1() {
                         </ul>
                       </div>
                     </>
+                  ) : activeTab === "Notes" ? (
+                    <div className="space-y-6">
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border-l-4 border-green-400">
+                        <h3 className="text-lg font-semibold text-green-800 mb-2">
+                          📚 Unit-wise PDF Notes for {selectedSubject}
+                        </h3>
+                        <p className="text-green-700 text-sm">
+                          Click on any unit below to access PDF notes and study materials
+                        </p>
+                      </div>
+                      
+                      {subjectUnits.map((unit, index) => {
+                        const unitPdfs = pdfData[selectedSubject]?.[unit.title] || [];
+                        return (
+                          <div
+                            key={index}
+                            className="bg-white border rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+                          >
+                            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-t-lg">
+                              <h3 className="text-lg font-semibold flex items-center">
+                                <span className="bg-white text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                                  {index + 1}
+                                </span>
+                                {unit.title}
+                              </h3>
+                            </div>
+                            
+                            <div className="p-4">
+                              <p className="text-gray-600 text-sm mb-4 italic">
+                                {unit.desc.length > 100 
+                                  ? `${unit.desc.substring(0, 100)}...` 
+                                  : unit.desc}
+                              </p>
+                              
+                              {unitPdfs.length > 0 ? (
+                                <div>
+                                  <h4 className="font-medium text-gray-800 mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                                    </svg>
+                                    Available PDF Notes
+                                  </h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                    {unitPdfs.map((pdf, idx) => (
+                                      <div
+                                        key={idx}
+                                        className="bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300"
+                                      >
+                                        <div className="flex items-center space-x-2 mb-3">
+                                          <div className="flex-shrink-0">
+                                            <svg 
+                                              xmlns="http://www.w3.org/2000/svg" 
+                                              className="h-6 w-6 text-red-500" 
+                                              viewBox="0 0 20 20" 
+                                              fill="currentColor"
+                                            >
+                                              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                                            </svg>
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <h5 className="text-sm font-medium text-gray-800 truncate">
+                                              {pdf.name}
+                                            </h5>
+                                            <p className="text-xs text-gray-500">
+                                              PDF Document
+                                            </p>
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="flex space-x-2">
+                                          <button
+                                            onClick={() => handleView(pdf.path)}
+                                            className="flex-1 flex items-center justify-center space-x-1 px-2 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded transition-colors"
+                                          >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                            </svg>
+                                            <span>View</span>
+                                          </button>
+                                          
+                                          <button
+                                            onClick={() => handleDownload(pdf.path, pdf.name)}
+                                            className="flex-1 flex items-center justify-center space-x-1 px-2 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs rounded transition-colors"
+                                          >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span>Download</span>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="text-center py-8 bg-gray-50 rounded-lg">
+                                  <div className="w-12 h-12 mx-auto bg-orange-100 rounded-full flex items-center justify-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                  </div>
+                                  <p className="text-gray-500 text-sm">
+                                    PDF notes for this unit will be available soon
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      
+                      {/* Download tips */}
+                      <div className="mt-6 bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                        <h4 className="font-medium text-yellow-800 mb-2 flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                          PDF Study Tips
+                        </h4>
+                        <ul className="text-sm text-yellow-700 ml-5 list-disc space-y-1">
+                          <li>Download PDFs for offline study access</li>
+                          <li>Use PDF annotations to highlight important concepts</li>
+                          <li>Print key pages for quick reference during exams</li>
+                          <li>Combine with syllabus topics for comprehensive study</li>
+                        </ul>
+                      </div>
+                    </div>
                   ) : (
                     <div className="text-center py-12 bg-gray-50 rounded-lg">
                       <div className="w-16 h-16 mx-auto bg-indigo-100 rounded-full flex items-center justify-center mb-4">

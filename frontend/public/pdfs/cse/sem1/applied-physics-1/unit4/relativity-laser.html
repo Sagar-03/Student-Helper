@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4: Relativity and Laser Physics</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #764ba2;
+        }
+        .unit-title {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .concept {
+            background: #f8f9ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            border: 2px dashed #ffc107;
+        }
+        .section-title {
+            color: #6f42c1;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #6f42c1;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .important {
+            background: #d4edda;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="subject">Applied Physics 1 - CSE Semester 1</div>
+            <h1 class="unit-title">UNIT - IV</h1>
+            <h2>Theory of Relativity & Laser Physics</h2>
+        </div>
+
+        <div class="content-section">
+            <h3 class="section-title">Special Theory of Relativity</h3>
+            
+            <div class="concept">
+                <h4><span class="highlight">Postulates of Special Relativity</span></h4>
+                <ol>
+                    <li>The laws of physics are the same in all inertial reference frames</li>
+                    <li>The speed of light in vacuum is constant for all observers</li>
+                </ol>
+            </div>
+
+            <div class="formula">
+                <strong>Lorentz Transformation:</strong><br>
+                x' = γ(x - vt)<br>
+                t' = γ(t - vx/c²)<br>
+                <small>Where: γ = 1/√(1 - v²/c²)</small>
+            </div>
+
+            <div class="important">
+                <h4>Relativistic Effects</h4>
+                <div class="formula">
+                    <strong>Time Dilation:</strong> Δt' = γΔt<br>
+                    <strong>Length Contraction:</strong> L' = L/γ<br>
+                    <strong>Mass-Energy:</strong> E = mc²
+                </div>
+            </div>
+
+            <div class="concept">
+                <h4><span class="highlight">Velocity Addition</span></h4>
+                <p>In relativistic mechanics, velocities don't add linearly.</p>
+                <div class="formula">
+                    v = (v₁ + v₂)/(1 + v₁v₂/c²)
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3 class="section-title">Laser Physics</h3>
+            
+            <div class="concept">
+                <h4><span class="highlight">LASER</span></h4>
+                <p><strong>L</strong>ight <strong>A</strong>mplification by <strong>S</strong>timulated <strong>E</strong>mission of <strong>R</strong>adiation</p>
+            </div>
+
+            <div class="concept">
+                <h4><span class="highlight">Einstein Coefficients</span></h4>
+                <ul>
+                    <li><strong>A₂₁:</strong> Spontaneous emission coefficient</li>
+                    <li><strong>B₂₁:</strong> Stimulated emission coefficient</li>
+                    <li><strong>B₁₂:</strong> Absorption coefficient</li>
+                </ul>
+            </div>
+
+            <div class="formula">
+                <strong>Einstein Relations:</strong><br>
+                B₁₂ = B₂₁<br>
+                A₂₁ = (8πhν³/c³)B₂₁
+            </div>
+
+            <div class="important">
+                <h4>Population Inversion</h4>
+                <p>Essential condition for laser action where more atoms are in excited state than ground state.</p>
+                <div class="formula">
+                    N₂ > N₁ (Population inversion condition)
+                </div>
+            </div>
+
+            <div class="concept">
+                <h4><span class="highlight">Laser Characteristics</span></h4>
+                <ul>
+                    <li><strong>Coherence:</strong> Temporal and spatial</li>
+                    <li><strong>Monochromaticity:</strong> Single wavelength</li>
+                    <li><strong>Directionality:</strong> Highly collimated beam</li>
+                    <li><strong>High Intensity:</strong> Concentrated energy</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3 class="section-title">Laser Examples</h3>
+            
+            <div class="concept">
+                <h4><span class="highlight">He-Ne Laser</span></h4>
+                <p>Gas laser using helium-neon mixture, produces red light at 632.8 nm.</p>
+            </div>
+
+            <div class="concept">
+                <h4><span class="highlight">Ruby Laser</span></h4>
+                <p>Solid-state laser using chromium-doped aluminum oxide, produces red light at 694.3 nm.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3 class="section-title">Applications</h3>
+            <ul>
+                <li><strong>Medical:</strong> Surgery, therapy, diagnostics</li>
+                <li><strong>Industrial:</strong> Cutting, welding, engraving</li>
+                <li><strong>Communications:</strong> Fiber optic systems</li>
+                <li><strong>Research:</strong> Spectroscopy, interferometry</li>
+                <li><strong>Defense:</strong> Rangefinding, guidance systems</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

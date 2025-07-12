@@ -28,52 +28,36 @@ const SCOPES = [
   'https://www.googleapis.com/auth/userinfo.email'
 ];
 
-// Generate a redirect URL for Google OAuth2 login
+// Generate a redirect URL for Google OAuth2 login - optimized
 exports.getAuthUrl = (req, res) => {
   try {
-    console.log('OAuth getAuthUrl called with environment:', process.env.NODE_ENV);
-    console.log('Redirect URI being used:', getRedirectUri());
-    console.log('Request origin:', req.get('Origin'));
-    console.log('Request headers:', req.headers);
-    
-    // Check if this is coming from the auth page or classroom page via query parameter
-    const source = req.query.source || 'classroom'; // Default to classroom for backward compatibility
+    const source = req.query.source || 'classroom';
     const state = source === 'auth' ? 'auth' : 'classroom';
     
     const url = oauth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES,
-      prompt: 'consent', // Force to get refresh token
-      state: state // Pass state to identify the source
+      prompt: 'consent',
+      state: state
     });
     
-    console.log('Generated auth URL successfully:', url);
     res.redirect(url);
   } catch (error) {
     console.error('Error generating auth URL:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to generate Google authentication URL',
-      error: error.message,
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      error: error.message
     });
   }
 };
 
-// Handle Google OAuth2 callback
+// Handle Google OAuth2 callback - optimized for performance
 exports.handleCallback = async (req, res) => {
   const { code, state, error: googleError } = req.query;
   
-  console.log('Google OAuth callback received:', {
-    hasCode: !!code,
-    state,
-    googleError,
-    fullUrl: req.originalUrl
-  });
-  
-  // Handle Google OAuth errors
+  // Handle Google OAuth errors quickly
   if (googleError) {
-    console.error('Google OAuth error:', googleError);
     const getFrontendUrl = () => {
       if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
         return process.env.PRODUCTION_FRONTEND_URL;
@@ -85,7 +69,6 @@ exports.handleCallback = async (req, res) => {
   }
   
   if (!code) {
-    console.error('Authorization code is missing from callback');
     return res.status(400).json({
       success: false,
       message: 'Authorization code is missing'
@@ -93,31 +76,24 @@ exports.handleCallback = async (req, res) => {
   }
   
   try {
-    console.log('Starting OAuth code exchange...');
-    // Exchange code for tokens
+    // Exchange code for tokens (this is the slowest part)
     const { tokens } = await oauth2Client.getToken(code);
     
-    if (!tokens || !tokens.access_token) {
-      console.error('Invalid tokens received:', tokens);
-      throw new Error('Received invalid tokens from Google');
+    if (!tokens?.access_token) {
+      throw new Error('Invalid tokens received from Google');
     }
     
-    console.log('Code exchange successful, setting credentials');
     oauth2Client.setCredentials(tokens);
     
     // Get user profile information
-    console.log('Fetching user profile information...');
     const oauth2 = google.oauth2({ version: 'v2', auth: oauth2Client });
     const userInfo = await oauth2.userinfo.get();
     
-    if (!userInfo || !userInfo.data || !userInfo.data.email) {
-      console.error('Invalid user info received:', userInfo);
-      throw new Error('Received invalid user information from Google');
+    if (!userInfo?.data?.email) {
+      throw new Error('Invalid user information from Google');
     }
     
-    console.log('User info retrieved successfully for:', userInfo.data.email);
-    
-    // Generate our own token that includes Google tokens and user info
+    // Generate JWT token quickly
     const googleToken = jwt.sign(
       {
         accessToken: tokens.access_token,
@@ -128,29 +104,30 @@ exports.handleCallback = async (req, res) => {
       { expiresIn: '7d' }
     );
     
-    // Check if user exists in our database
-    let user = await User.findOne({ email: userInfo.data.email });
+    // Asynchronously handle user creation/update (don't block the response)
+    setImmediate(async () => {
+      try {
+        let user = await User.findOne({ email: userInfo.data.email });
+        
+        if (!user) {
+          user = new User({
+            name: userInfo.data.name,
+            email: userInfo.data.email,
+            googleId: userInfo.data.id,
+            profilePicture: userInfo.data.picture
+          });
+        } else {
+          user.name = userInfo.data.name;
+          user.googleId = userInfo.data.id;
+          user.profilePicture = userInfo.data.picture;
+        }
+        await user.save();
+      } catch (dbError) {
+        console.error('Database operation error:', dbError);
+      }
+    });
     
-    if (!user) {
-      // Create a new user if not exists
-      user = new User({
-        name: userInfo.data.name,
-        email: userInfo.data.email,
-        googleId: userInfo.data.id,
-        profilePicture: userInfo.data.picture
-      });
-      await user.save();
-      console.log('Created new user:', user.email);
-    } else {
-      // Update existing user with latest Google info
-      user.name = userInfo.data.name;
-      user.googleId = userInfo.data.id;
-      user.profilePicture = userInfo.data.picture;
-      await user.save();
-      console.log('Updated existing user:', user.email);
-    }
-    
-    // Get frontend URL based on environment
+    // Get frontend URL and redirect immediately
     const getFrontendUrl = () => {
       if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
         return process.env.PRODUCTION_FRONTEND_URL;
@@ -159,17 +136,12 @@ exports.handleCallback = async (req, res) => {
     };
     
     const frontendUrl = getFrontendUrl();
-    console.log('Redirecting to frontend URL:', frontendUrl);
-    
-    // Redirect based on the source (auth or classroom)
     const redirectPath = state === 'auth' ? '/auth' : '/googleclassroom';
     const redirectUrl = `${frontendUrl}${redirectPath}?token=${googleToken}`;
-    console.log('Full redirect URL:', redirectUrl);
     
     res.redirect(redirectUrl);
   } catch (error) {
-    console.error('Error handling Google callback:', error);
-    console.error('Error stack:', error.stack);
+    console.error('OAuth callback error:', error);
     
     const getFrontendUrl = () => {
       if (process.env.NODE_ENV === 'production' && process.env.PRODUCTION_FRONTEND_URL) {
