@@ -282,68 +282,6 @@ export default function MarketplaceHome() {
           </div>
         </div>
       </div>
-
-      {/* Stats Section */}
-      <section className="bg-gray-100 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-            MarketPlace Community Impact
-          </h2>
-          <p className="text-center text-gray-700 max-w-2xl mx-auto mb-8">
-            Join thousands of learners exchanging knowledge and resources in our
-            academic marketplace
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h3 className="text-4xl font-bold text-indigo-600">1000+</h3>
-              <p className="mt-2 text-lg font-medium text-gray-700">
-                Positive Impacts
-              </p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-indigo-600">1000+</h3>
-              <p className="mt-2 text-lg font-medium text-gray-700">
-                Student Success Stories
-              </p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-bold text-indigo-600">1000+</h3>
-              <p className="mt-2 text-lg font-medium text-gray-700">
-                Lives Changed
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of students already saving money and earning extra
-            cash with our student marketplace
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button
-              onClick={handleSellClick}
-              className="bg-white text-blue-700 px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-blue-800/30 transition font-medium"
-            >
-              Start Selling
-            </button>
-
-            <button
-              onClick={handleBuyClick}
-              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-blue-800/30 hover:bg-white hover:bg-opacity-10 transition font-medium"
-            >
-              Browse Products
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
