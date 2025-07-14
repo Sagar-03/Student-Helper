@@ -184,20 +184,6 @@ We welcome contributions!
 4. Push to the branch: `git push origin feature/your-feature-name`
 5. Create a pull request
 
----
-
-## 👨‍💻 Project Maintainer
-
-**Sagar Kumar Jha**
-Final Year | B.Tech CSE | ADGIPS College
-Tech Enthusiast | Community Builder | Web Developer
-
-* 🌐 [Portfolio](https://your-portfolio-link.com)
-* 💼 [LinkedIn](https://linkedin.com/in/sagar-kumar-jha)
-* 💻 [GitHub](https://github.com/sagarkumarjha)
-
----
-
 ## 📜 License
 
 This project is licensed under the MIT License.
