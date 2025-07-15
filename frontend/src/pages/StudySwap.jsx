@@ -95,14 +95,14 @@ export default function StudySwap() {
         setLoading(true);
         try {
           // Just check if the endpoint can be reached
-          await axios.get("/api/studyswap/health-check");
+          await axios.get("/studyswap/health-check");
           setApiAvailable(true);
 
           // If API is available, fetch the real data
           try {
             const [writersResponse, requestsResponse] = await Promise.all([
-              axios.get("/api/studyswap/writers"),
-              axios.get("/api/studyswap/requests"),
+              axios.get("/studyswap/writers"),
+              axios.get("/studyswap/requests"),
             ]);
 
             if (writersResponse.data && writersResponse.data.length > 0) {

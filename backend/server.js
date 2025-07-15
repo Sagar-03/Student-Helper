@@ -49,10 +49,15 @@ app.use(cors({
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// API routes with /api prefix
 app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/google', googleRoutes); // Mount Google routes
 app.use('/api/studyswap', studySwapRoutes); // Mount StudySwap routes
+
+// Legacy routes without /api prefix for backward compatibility
+app.use('/auth', authRoutes);
+app.use('/product', productRoutes);
 
 // Initialize cron jobs
 scheduleNotifications();

@@ -48,7 +48,7 @@ export default function GoogleClassroom() {
       if (token) {
         // Verify token validity
         setLoading(true);
-        const response = await axios.post('/api/google/verify-token', { token });
+        const response = await axios.post('/google/verify-token', { token });
         if (response.data.valid) {
           setGoogleAuth({
             token,
@@ -74,7 +74,7 @@ export default function GoogleClassroom() {
   const handleAuthentication = async (token) => {
     setLoading(true);
     try {
-      const response = await axios.post('/api/google/verify-token', { token });
+      const response = await axios.post('/google/verify-token', { token });
       if (response.data.valid) {
         setGoogleAuth({
           token,
@@ -141,7 +141,7 @@ export default function GoogleClassroom() {
     setLoading(true);
     try {
       // Get courses
-      const coursesResponse = await axios.get('/api/google/courses', {
+      const coursesResponse = await axios.get('/google/courses', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCourses(coursesResponse.data);
@@ -150,7 +150,7 @@ export default function GoogleClassroom() {
       const allAssignments = [];
       for (const course of coursesResponse.data) {
         try {
-          const assignmentsResponse = await axios.get(`/api/google/courses/${course.id}/assignments`, {
+          const assignmentsResponse = await axios.get(`/google/courses/${course.id}/assignments`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           
@@ -179,7 +179,7 @@ export default function GoogleClassroom() {
       // Check notification status - TODO: implement notification status endpoint
       /*
       try {
-        const notifResponse = await axios.get('/api/google/notifications/status', {
+        const notifResponse = await axios.get('/google/notifications/status', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -222,7 +222,7 @@ export default function GoogleClassroom() {
       if (permission === "granted") {
         setNotificationsEnabled(true);
         // Register for notifications on the backend
-        await axios.post('/api/google/notifications/enable', {
+        await axios.post('/google/notifications/enable', {
           userId: googleAuth.user.email,
           token: googleAuth.token
         });

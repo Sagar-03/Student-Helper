@@ -21,10 +21,10 @@ export default function Auth() {
 
   // After successful login/registration - optimized for performance
   const handleSuccess = (token, userData) => {
-    // Use localStorage instead of sessionStorage for better performance
-    localStorage.setItem("token", token);
+    // Use sessionStorage for better security (expires when browser closes)
+    sessionStorage.setItem("token", token);
     if (userData) {
-      localStorage.setItem("user", JSON.stringify(userData));
+      sessionStorage.setItem("user", JSON.stringify(userData));
     }
 
     // Dispatch authChange event asynchronously to avoid blocking
@@ -73,13 +73,14 @@ export default function Auth() {
           email: form.email,
           password: form.password,
         });
-        // Use sessionStorage instead of localStorage to make auth expire when browser closes
+        // Use sessionStorage for better security
         handleSuccess(res.data.data.token, res.data.data);
       } else {
         const res = await axios.post("/auth/register", form);
         // Automatically log in the user after successful registration
         handleSuccess(res.data.data.token, res.data.data);
-      }    } catch (err) {
+      }
+    } catch (err) {
       setError(err.response?.data?.message || err.response?.data?.msg || err.message);
     } finally {
       setIsLoading(false);
