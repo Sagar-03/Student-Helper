@@ -20,15 +20,6 @@ export default function Upload() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Check if user is logged in
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      // Redirect to login page if not logged in
-      navigate('/login', { state: { from: '/upload' } });
-    }
-  }, [navigate]);
-
   const topLinks = [
     
   ];

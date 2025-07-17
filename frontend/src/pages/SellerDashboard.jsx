@@ -12,15 +12,6 @@ const sideLinks = [
 export default function SellerDashboard() {
   const navigate = useNavigate();
 
-  // Check if user is logged in
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-      // Redirect to login page if not logged in
-      navigate('/login', { state: { from: '/seller-dashboard' } });
-    }
-  }, [navigate]);
-
   const topLinks = [
     
   ];

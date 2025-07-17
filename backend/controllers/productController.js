@@ -24,7 +24,7 @@ exports.uploadProduct = async (req, res) => {
       whatsappNumber,
       image: `${BASE_URL}/uploads/${image}`,
       sold: false,
-      postedBy: req.user.userId
+      postedBy: req.user?.userId || null
     });
 
     await newProduct.save();

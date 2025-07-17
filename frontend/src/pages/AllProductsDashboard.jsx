@@ -82,12 +82,6 @@ export default function AllProductsDashboard() {
 
   const handlePurchase = async (productId) => {
     try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        navigate("/login", { state: { from: "/all-products" } });
-        return;
-      }
-
       const response = await axios.patch(`/product/purchase/${productId}`);
       const notificationSent = response.data.notification?.sent;
       const directLink = response.data.notification?.directLink;
@@ -112,9 +106,7 @@ export default function AllProductsDashboard() {
       );
       setPurchaseSuccess(true);
       fetchProducts();
-      setTimeout(() => {
-        navigate("/purchases");
-      }, 3000);
+      // No redirect to purchases page since it might require login
     } catch (err) {
       console.error("Purchase failed:", err.response?.data || err.message);
       alert(

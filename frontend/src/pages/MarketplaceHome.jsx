@@ -7,14 +7,8 @@ export default function MarketplaceHome() {
   const navigate = useNavigate();
 
   const handleSellClick = () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      // Not logged in → redirect to login first
-      navigate("/login", { state: { from: "/seller-dashboard" } });
-    } else {
-      // Already logged in → go to Seller Dashboard
-      navigate("/seller-dashboard");
-    }
+    // No login check needed for selling, proceed directly
+    navigate("/seller-dashboard");
   };
 
   const handleBuyClick = () => {
