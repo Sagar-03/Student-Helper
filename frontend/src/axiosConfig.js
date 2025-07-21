@@ -39,13 +39,19 @@ instance.interceptors.response.use(
       });
     }
     
+    // Handle 401 errors but don't redirect immediately to prevent refresh loops
     if (error.response?.status === 401) {
       // Clear invalid token from both storages
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('user');
-      window.location.href = '/auth';
+      
+      // Only redirect if not already on auth page
+      if (window.location.pathname !== '/auth') {
+        window.dispatchEvent(new Event('authChange'));
+        window.location.href = '/auth';
+      }
     }
     return Promise.reject(error);
   }

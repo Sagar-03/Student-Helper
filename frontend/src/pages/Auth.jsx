@@ -19,24 +19,54 @@ export default function Auth() {
     { to: "/StudySwap", label: "StudySwap" },
   ];
 
+  // Clear error after 10 seconds to give user time to read it
+  useEffect(() => {
+    if (error && !error.includes("successful")) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 10000); // Increased from 8 to 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  // Clear error when switching between login/register
+  const toggleAuthMode = (newMode, e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    
+    setIsLogin(newMode);
+    // Don't clear error immediately - let user see what went wrong
+    // setError(""); // Clear any existing errors
+  };
+
   // After successful login/registration - optimized for performance
   const handleSuccess = (token, userData) => {
-    // Use sessionStorage for better security (expires when browser closes)
-    sessionStorage.setItem("token", token);
-    if (userData) {
-      sessionStorage.setItem("user", JSON.stringify(userData));
-    }
+    try {
+      // Use sessionStorage for better security (expires when browser closes)
+      sessionStorage.setItem("token", token);
+      if (userData) {
+        sessionStorage.setItem("user", JSON.stringify(userData));
+      }
 
-    // Dispatch authChange event asynchronously to avoid blocking
-    setTimeout(() => window.dispatchEvent(new Event("authChange")), 0);
+      // Dispatch authChange event asynchronously to avoid blocking
+      setTimeout(() => window.dispatchEvent(new Event("authChange")), 0);
 
-    // Navigate immediately for better UX
-    const redirectPath = sessionStorage.getItem("redirectAfterLogin");
-    if (redirectPath) {
-      sessionStorage.removeItem("redirectAfterLogin");
-      navigate(redirectPath, { replace: true });
-    } else {
-      navigate("/dashboard", { replace: true });
+      // Navigate with timeout to prevent immediate navigation conflicts
+      setTimeout(() => {
+        const redirectPath = sessionStorage.getItem("redirectAfterLogin");
+        if (redirectPath) {
+          sessionStorage.removeItem("redirectAfterLogin");
+          navigate(redirectPath, { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      }, 100);
+    } catch (error) {
+      console.error("Error during success handling:", error);
+      // Fallback: still try to navigate even if storage fails
+      setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 100);
     }
   };
 
@@ -63,9 +93,25 @@ export default function Auth() {
   // Removed the Google OAuth message listener since we're using direct redirect now
 
   const handleSubmit = async (e) => {
+    // Prevent default behavior immediately
     e.preventDefault();
-    setError("");
+    e.stopPropagation(); // Prevent any event bubbling
+    
+    console.log("Form submission started, preventing default behavior");
+    
+    // Prevent any default behavior that might cause refresh
+    if (e.target) {
+      e.target.blur(); // Remove focus from submit button
+    }
+    
+    // Prevent duplicate submissions
+    if (isLoading) {
+      console.log("Already loading, preventing duplicate submission");
+      return;
+    }
+    
     setIsLoading(true);
+    // Don't clear error immediately - let user see previous errors until new attempt
 
     try {
       if (isLogin) {
@@ -73,39 +119,58 @@ export default function Auth() {
           email: form.email,
           password: form.password,
         });
-        // Use sessionStorage for better security
+        // Success - clear any previous errors
+        setError("");
         handleSuccess(res.data.data.token, res.data.data);
       } else {
         const res = await axios.post("/auth/register", form);
-        // Automatically log in the user after successful registration
+        // Success - clear any previous errors
+        setError("");
         handleSuccess(res.data.data.token, res.data.data);
       }
     } catch (err) {
-      setError(err.response?.data?.message || err.response?.data?.msg || err.message);
+      console.error("Auth error caught:", err);
+      const errorMessage = err.response?.data?.message || err.response?.data?.msg || err.message || "An unexpected error occurred";
+      // Set error and ensure it persists
+      setError(errorMessage);
+      console.error("Auth error:", err);
     } finally {
+      // Always set loading to false, regardless of success or error
       setIsLoading(false);
     }
   };
 
   // Optimized Google login handler for better performance
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    
     setIsGoogleLoading(true);
-    setError("");
+    // Don't clear error immediately - let user see what went wrong
     
-    // Use environment variable for faster detection
-    const isDevelopment = import.meta.env.DEV;
-    const apiUrl = isDevelopment 
-      ? 'http://localhost:5000'
-      : 'https://student-helper-b5j4.onrender.com';
-    
-    // Pre-construct URL for immediate redirect
-    const authUrl = `${apiUrl}/api/google/auth?source=auth`;
-    
-    // Immediate redirect without try-catch for faster response
-    window.location.href = authUrl;
+    try {
+      // Use environment variable for faster detection
+      const isDevelopment = import.meta.env.DEV;
+      const apiUrl = isDevelopment 
+        ? 'http://localhost:5000'
+        : 'https://student-helper-b5j4.onrender.com';
+      
+      // Pre-construct URL for immediate redirect
+      const authUrl = `${apiUrl}/api/google/auth?source=auth`;
+      
+      // Immediate redirect without try-catch for faster response
+      window.location.href = authUrl;
+    } catch (error) {
+      console.error("Google login error:", error);
+      setIsGoogleLoading(false);
+      setError("Failed to redirect to Google login. Please try again.");
+    }
   };
 
-  const handleEmailLogin = () => {
+  const handleEmailLogin = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    
     // This is a placeholder for single-click email login
     handleSuccess("email-login-token", { name: "Email User" });
   };
@@ -136,17 +201,49 @@ export default function Auth() {
 
             {error && (
               <div
-                className={`p-3 rounded-lg mb-4 text-center ${
+                className={`p-4 rounded-lg mb-4 text-sm border-l-4 ${
                   error.includes("successful")
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
+                    ? "bg-green-50 text-green-700 border-green-400"
+                    : "bg-red-50 text-red-700 border-red-400"
                 }`}
               >
-                {error}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    {error.includes("successful") ? (
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                    <span className="font-medium">{error}</span>
+                  </div>
+                  <button
+                    onClick={() => setError("")}
+                    className="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             )}
 
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <form 
+              className="flex flex-col gap-4" 
+              onSubmit={handleSubmit} 
+              noValidate
+              method="post"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
+            >
               {!isLogin && (
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -226,6 +323,12 @@ export default function Auth() {
                 type="submit"
                 disabled={isLoading}
                 className="p-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 font-medium"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
               >
                 {isLoading ? (
                   <div className="flex justify-center items-center">
@@ -267,6 +370,7 @@ export default function Auth() {
 
             <div className="flex flex-col gap-3">
               <button
+                type="button"
                 className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
                 onClick={handleGoogleLogin}
                 disabled={isGoogleLoading}
@@ -294,6 +398,7 @@ export default function Auth() {
               </button>
 
               <button
+                type="button"
                 className="p-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
                 onClick={handleEmailLogin}
               >
@@ -318,7 +423,7 @@ export default function Auth() {
                   Don't have an account?{" "}
                   <span
                     className="text-blue-600 cursor-pointer font-medium hover:underline"
-                    onClick={() => setIsLogin(false)}
+                    onClick={(e) => toggleAuthMode(false, e)}
                   >
                     Register here
                   </span>
@@ -328,7 +433,7 @@ export default function Auth() {
                   Already have an account?{" "}
                   <span
                     className="text-blue-600 cursor-pointer font-medium hover:underline"
-                    onClick={() => setIsLogin(true)}
+                    onClick={(e) => toggleAuthMode(true, e)}
                   >
                     Sign in here
                   </span>
