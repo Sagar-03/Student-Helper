@@ -15,7 +15,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://student-helper-yave.vercel.app',
+  'https://student-helper-yaye.vercel.app',
   'http://localhost:5000',
   'https://student-helper-b5j4.onrender.com'
 ];
@@ -26,14 +26,15 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
     
+    // Check if origin is in allowed list
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    
     // In production, be more permissive for Google OAuth redirects
     if (process.env.NODE_ENV === 'production') {
       // Allow all https origins for Google OAuth callback
-      if (origin && (origin.includes('accounts.google.com') || allowedOrigins.indexOf(origin) !== -1)) {
-        return callback(null, true);
-      }
-    } else {
-      if (allowedOrigins.indexOf(origin) !== -1) {
+      if (origin && origin.includes('accounts.google.com')) {
         return callback(null, true);
       }
     }
@@ -43,7 +44,9 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 app.use(express.json());
