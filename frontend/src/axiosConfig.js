@@ -1,8 +1,12 @@
 // axiosConfig.js - optimized for performance
 import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+console.log('API Base URL:', baseURL); // Debug log
+
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL,
   withCredentials: true,
   timeout: 10000, // 10 second timeout
   headers: {
@@ -23,6 +27,18 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Log CORS and other errors for debugging
+    if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
+      console.error('Network/CORS Error:', {
+        message: error.message,
+        config: {
+          baseURL: error.config?.baseURL,
+          url: error.config?.url,
+          method: error.config?.method
+        }
+      });
+    }
+    
     if (error.response?.status === 401) {
       // Clear invalid token from both storages
       localStorage.removeItem('token');

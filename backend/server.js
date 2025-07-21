@@ -23,11 +23,14 @@ const allowedOrigins = [
 // CORS setup
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('CORS Request from origin:', origin); // Debug log
+    
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
     
     // Check if origin is in allowed list
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('CORS: Origin allowed'); // Debug log
       return callback(null, true);
     }
     
@@ -35,6 +38,7 @@ app.use(cors({
     if (process.env.NODE_ENV === 'production') {
       // Allow all https origins for Google OAuth callback
       if (origin && origin.includes('accounts.google.com')) {
+        console.log('CORS: Google OAuth origin allowed'); // Debug log
         return callback(null, true);
       }
     }
