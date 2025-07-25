@@ -6,77 +6,10 @@ import axios from "axios";
 
 const topLinks = [];
 
-// Sample writer services data for initial testing
-const sampleWriterServices = [
-  {
-    name: "Alex Rahman",
-    title: "Research Paper Writing",
-    expertise: ["Computer Science", "Data Analysis", "Machine Learning"],
-    rate: "$15/page",
-    rating: 4.8,
-    contact: "+1234567890",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    name: "Jessica Chen",
-    title: "Essay Writing & Editing",
-    expertise: ["Literature", "History", "Psychology"],
-    rate: "$12/page",
-    rating: 4.9,
-    contact: "+1234567891",
-    image: "https://randomuser.me/api/portraits/women/33.jpg",
-  },
-  {
-    name: "Michael Torres",
-    title: "Technical Report Writing",
-    expertise: ["Engineering", "Physics", "Mathematics"],
-    rate: "$18/page",
-    rating: 4.7,
-    contact: "+1234567892",
-    image: "https://randomuser.me/api/portraits/men/34.jpg",
-  },
-];
-
-// Sample assignment requests data
-const sampleAssignmentRequests = [
-  {
-    title: "10-page Research Paper on Machine Learning",
-    subject: "Computer Science",
-    deadline: "7 days",
-    budget: "$150",
-    pages: 10,
-    requirements: "Must include at least 15 scholarly sources, APA format",
-    contact: "+1987654320",
-  },
-  {
-    title: "Case Study Analysis for Marketing Course",
-    subject: "Business",
-    deadline: "4 days",
-    budget: "$85",
-    pages: 5,
-    requirements:
-      "Analyze the provided case study with SWOT analysis and recommendations",
-    contact: "+1987654321",
-  },
-  {
-    title: "Literature Review on Climate Change Effects",
-    subject: "Environmental Science",
-    deadline: "10 days",
-    budget: "$200",
-    pages: 12,
-    requirements:
-      "Need comprehensive analysis of 20+ peer-reviewed articles from last 5 years",
-    contact: "+1987654322",
-  },
-];
-
 export default function StudySwap() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const [writerServices, setWriterServices] = useState(sampleWriterServices);
-  const [assignmentRequests, setAssignmentRequests] = useState(
-    sampleAssignmentRequests
-  );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [apiAvailable, setApiAvailable] = useState(true);
@@ -178,16 +111,15 @@ export default function StudySwap() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="w-full shadow-sm bg-white bg-opacity-90 sticky top-0 z-10">
-        <Navbar links={topLinks} />
-      </div>
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 absolute inset-0 -z-10" />
+      <Navbar links={topLinks} />
 
-      <div className="container mx-auto px-4 pt-4">
+      <div className="container pt-0 -mt-6">
         <BackButton />
       </div>
 
-      <div className="relative overflow-hidden py-16 md:py-24">
+      <div className="relative overflow-hidden pt-8 pb-16 md:pt-12 md:pb-24">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-5"></div>
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center mb-12">
@@ -257,7 +189,7 @@ export default function StudySwap() {
             {quickActions.map((action, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-xl p-6 shadow-lg border border-indigo-100 hover:shadow-xl transition-all hover:transform hover:-translate-y-1 group"
+                className="rounded-xl p-6 shadow-lg border border-indigo-100 hover:shadow-xl transition-all hover:transform hover:-translate-y-1 group"
               >
                 <div
                   className={`w-14 h-14 mb-4 rounded-lg bg-gradient-to-r ${action.color} flex items-center justify-center text-2xl`}
@@ -283,29 +215,6 @@ export default function StudySwap() {
           )}
         </div>
       </div>
-
-        {/* Stats Section */}
-        <div className="py-16 bg-blue-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-            Our Impact
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-            <div>
-              <h3 className="text-4xl font-extrabold text-indigo-600">500+</h3>
-              <p className="text-gray-600">Writers Available</p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-extrabold text-indigo-600">10,000+</h3>
-              <p className="text-gray-600">Assignments Completed</p>
-            </div>
-            <div>
-              <h3 className="text-4xl font-extrabold text-indigo-600">4.9/5</h3>
-              <p className="text-gray-600">Average Client Rating</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
