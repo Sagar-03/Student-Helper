@@ -15,7 +15,7 @@ export default function MarketplaceHome() {
     // No login check needed for buying, proceed directly
     navigate("/all-products");
   };
-
+``
   const topLinks = [];
 
   // Features of the marketplace
@@ -143,9 +143,7 @@ export default function MarketplaceHome() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
-      <div className="w-full bg-white shadow-sm sticky top-0 z-10">
-        <Navbar links={topLinks} />
-      </div>
+      <Navbar links={topLinks} />
 
       {/* Back Button */}
       <div className="container mx-auto px-4">
@@ -159,7 +157,7 @@ export default function MarketplaceHome() {
         <div className="absolute top-32 right-1/4 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-blob animation-delay-2000"></div>
         <div className="absolute bottom-32 left-1/3 w-36 h-36 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-blob animation-delay-4000"></div>
 
-        <div className="container mx-auto px-4 py-16 text-center relative z-10">
+        <div className="container mx-auto px-4 py-16 text-center relative z-10 mt-20">
           <h1 className="text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             Student Marketplace
           </h1>
