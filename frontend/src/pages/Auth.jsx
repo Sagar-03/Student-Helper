@@ -362,13 +362,13 @@ export default function Auth() {
               </button>
             </form>
 
-            <div className="my-6 flex items-center">
+           <div className="my-6 flex items-center">
               <div className="flex-grow border-t border-gray-300"></div>
               <span className="mx-4 text-gray-500 text-sm">OR</span>
               <div className="flex-grow border-t border-gray-300"></div>
             </div>
 
-            <div className="flex flex-col gap-3">
+            {/* <div className="flex flex-col gap-3">
               <button
                 type="button"
                 className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
@@ -395,7 +395,7 @@ export default function Auth() {
                     <span>Continue with Google</span>
                   </>
                 )}
-              </button>
+              </button> 
 
               <button
                 type="button"
@@ -414,7 +414,7 @@ export default function Auth() {
                 </svg>
                 Continue with Email
               </button>
-            </div>
+            </div> */}
 
             {/* Toggle Button */}
             <div className="mt-6 text-center">
