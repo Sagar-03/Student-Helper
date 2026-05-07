@@ -1,14 +1,16 @@
 // axiosConfig.js - optimized for performance
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Use explicit VITE_API_URL when provided; otherwise use a relative `/api`
+// This avoids accidentally pointing the client to localhost when deployed
+const baseURL = import.meta.env.VITE_API_URL || '/api';
 
-console.log('API Base URL:', baseURL); // Debug log
+// Helpful debug log in development only
+if (import.meta.env.DEV) console.log('API Base URL:', baseURL);
 
 const instance = axios.create({
   baseURL,
   withCredentials: true,
-  timeout: 10000, // 10 second timeout
   headers: {
     'Content-Type': 'application/json',
   }
